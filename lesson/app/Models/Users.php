@@ -56,4 +56,13 @@ class Users extends Model
             ->where('id', $data['id'])
             ->update($data);
     }
+    static function logout($id){
+        $data = [
+            'id' => $id,
+            'remember_token' => ''
+        ];
+        DB::table(self::TABLE)
+            ->where('id', $data['id'])
+            ->update($data);
+    }
 }

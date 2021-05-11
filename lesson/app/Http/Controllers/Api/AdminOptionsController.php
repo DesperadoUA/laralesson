@@ -36,7 +36,6 @@ class AdminOptionsController extends Controller
         $data_request = $request->input('data');
         $data_save = Validate::componentsLibValidateSave($request->input('data'));
         $post->updateById($data_request['id'], $data_save);
-
         return response()->json($response);
     }
 }

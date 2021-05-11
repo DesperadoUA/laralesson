@@ -22,25 +22,12 @@ class LoginController extends Controller
             $res['data'] = Users::createToken($data['name'], $data['password']);
             $res['confirm'] = 'ok';
         }
-
         return response()->json($res);
     }
     public function logout(Request $request)
     {
-        /*
-        $data = [
-            'name' => $request->input('login'),
-            'password' => md5($request->input('password'))
-        ];
-        $res = [
-            'confirm' => 'error'
-        ];
-        if(Users::login($data['name'], $data['password'])) {
-            $res['data'] = Users::createToken($data['name'], $data['password']);
-            $res['confirm'] = 'ok';
-        }
-
+        $res['confirm'] = 'ok';
+        Users::logout($request->input('id'));
         return response()->json($res);
-        */
     }
 }

@@ -32,7 +32,6 @@ class Validate
         return $newData;
     }
     public static function componentsLibDecode($data) {
-
         $newData =  [];
         $newData['id']     = $data->id;
         $newData['title']  = $data->title;
@@ -47,7 +46,6 @@ class Validate
                 $newData['value'] = json_decode($data->value, true);
             }
         }
-
         return $newData;
     }
 }
