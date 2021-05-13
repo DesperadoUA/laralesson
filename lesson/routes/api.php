@@ -33,6 +33,10 @@ Route::namespace('Api')->group(function () {
     Route::post('admin/pages/update', 'AdminPageController@update')->middleware('api_auth');
     Route::post('admin/pages/{id}', 'AdminPageController@show')->middleware('api_auth');
 
+    Route::post('admin/category', 'AdminCategoryController@index')->middleware('api_auth');
+    Route::post('admin/category/update', 'AdminCategoryController@update')->middleware('api_auth');
+    Route::post('admin/category/{id}', 'AdminCategoryController@show')->middleware('api_auth');
+
     Route::post('admin/options', 'AdminOptionsController@index')->middleware('api_auth');
     Route::post('admin/options/update', 'AdminOptionsController@update')->middleware('api_auth');
     Route::post('admin/options/{id}', 'AdminOptionsController@show')->middleware('api_auth');
