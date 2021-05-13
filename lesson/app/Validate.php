@@ -8,7 +8,7 @@ class Validate
 {
     const CONFIG_EDITOR = [
         'TEXT_DECODE' => ['image', 'input', 'rich_text'],
-        'JSON_DECODE' => ['two_input_image']
+        'JSON_DECODE' => ['two_input_image', 'input_text']
     ];
     public static function textValidate($str){
             $str = trim($str);

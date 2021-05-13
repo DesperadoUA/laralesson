@@ -15,7 +15,10 @@ class CasinoMeta extends Migration
     {
         Schema::create('casino_meta', function (Blueprint $table) {
             $table->bigInteger('post_id')->unsigned();
-            $table->text('bonuses');
+            $table->string('bonus');
+            $table->string('bonus_wagering');
+            $table->string('freespins');
+            $table->string('freespins_wagering');
             $table->text('currency');
             $table->text('faq');
             $table->text('faq_title');
@@ -31,6 +34,10 @@ class CasinoMeta extends Migration
             $table->string('video_banner');
             $table->string('video_iframe');
             $table->unique('post_id');
+            $table->boolean('regular_offers')->default(1);
+            $table->boolean('live_chat')->default(1);
+            $table->boolean('live_casino')->default(1);
+            $table->boolean('vip_program')->default(1);
             $table->foreign('post_id')
                 ->references('id')
                 ->on('posts')
