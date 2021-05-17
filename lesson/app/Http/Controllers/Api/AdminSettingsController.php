@@ -9,6 +9,7 @@ use App\Validate;
 
 class AdminSettingsController extends Controller
 {
+    const LANG = 1;
     public function index(Request $request) {
         $response = [
             'body' => [],

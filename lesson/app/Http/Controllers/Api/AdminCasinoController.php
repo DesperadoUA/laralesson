@@ -77,7 +77,7 @@ class AdminCasinoController extends AdminPostsController
         $post->updateById($data_request['id'], $data_save);
 
         $data_meta = self::dataValidateMetaSave($data_request);
-        Casino::updateByPostId($data_request['id'], $data_meta);
+        $post->updateMetaById($data_request['id'], $data_meta);
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){

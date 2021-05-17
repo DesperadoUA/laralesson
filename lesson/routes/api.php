@@ -29,6 +29,24 @@ Route::namespace('Api')->group(function () {
     Route::post('admin/casino/store', 'AdminCasinoController@store')->middleware('api_auth');
     Route::post('admin/casino/{id}', 'AdminCasinoController@show')->middleware('api_auth');
 
+    Route::post('admin/bonuses', 'AdminBonusesController@index')->middleware('api_auth');
+    Route::post('admin/bonuses/update', 'AdminBonusesController@update')->middleware('api_auth');
+    Route::post('admin/bonuses/delete', 'AdminBonusesController@delete')->middleware('api_auth');
+    Route::post('admin/bonuses/store', 'AdminBonusesController@store')->middleware('api_auth');
+    Route::post('admin/bonuses/{id}', 'AdminBonusesController@show')->middleware('api_auth');
+
+    Route::post('admin/slots', 'AdminSlotsController@index')->middleware('api_auth');
+    Route::post('admin/slots/update', 'AdminSlotsController@update')->middleware('api_auth');
+    Route::post('admin/slots/delete', 'AdminSlotsController@delete')->middleware('api_auth');
+    Route::post('admin/slots/store', 'AdminSlotsController@store')->middleware('api_auth');
+    Route::post('admin/slots/{id}', 'AdminSlotsController@show')->middleware('api_auth');
+
+    Route::post('admin/payments', 'AdminPaymentsController@index')->middleware('api_auth');
+    Route::post('admin/payments/update', 'AdminPaymentsController@update')->middleware('api_auth');
+    Route::post('admin/payments/delete', 'AdminPaymentsController@delete')->middleware('api_auth');
+    Route::post('admin/payments/store', 'AdminPaymentsController@store')->middleware('api_auth');
+    Route::post('admin/payments/{id}', 'AdminPaymentsController@show')->middleware('api_auth');
+
     Route::post('admin/pages', 'AdminPageController@index')->middleware('api_auth');
     Route::post('admin/pages/update', 'AdminPageController@update')->middleware('api_auth');
     Route::post('admin/pages/{id}', 'AdminPageController@show')->middleware('api_auth');

@@ -296,6 +296,7 @@ class AdminPostsController extends Controller
         $newData['short_desc'] = htmlspecialchars_decode($data->short_desc, ENT_NOQUOTES);
         $newData['thumbnail'] = $data->thumbnail;
         $newData['permalink'] = $data->permalink;
+        $newData['post_type'] = $data->post_type;
         return $newData;
     }
 }

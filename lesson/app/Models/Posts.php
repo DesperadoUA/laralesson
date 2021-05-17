@@ -132,4 +132,9 @@ class Posts extends Model
             ->where('lang', $lang)
             ->count();
     }
+    public function updateMetaById($id, $data) {
+        DB::table($this->table_meta)
+            ->where('post_id', $id)
+            ->update($data);
+    }
 }

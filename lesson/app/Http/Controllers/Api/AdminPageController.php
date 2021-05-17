@@ -184,6 +184,7 @@ class AdminPageController extends Controller
         $newData['meta_title']  = htmlspecialchars_decode($data->meta_title, ENT_NOQUOTES);
         $newData['short_desc']  = htmlspecialchars_decode($data->short_desc, ENT_NOQUOTES);
         $newData['thumbnail']   = $data->thumbnail;
+        $newData['post_type']   = $data->post_type;
         return $newData;
     }
 }

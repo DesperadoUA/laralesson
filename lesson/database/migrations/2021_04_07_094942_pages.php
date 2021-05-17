@@ -15,7 +15,7 @@ class Pages extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('post_type')->default('page');
+            $table->string('post_type')->default('static-pages');
             $table->enum('status', ['public', 'hide', 'basket'])->default('public');
             $table->string('permalink');
             $table->string('slug')->default('static-pages');
