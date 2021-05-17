@@ -47,6 +47,18 @@ Route::namespace('Api')->group(function () {
     Route::post('admin/payments/store', 'AdminPaymentsController@store')->middleware('api_auth');
     Route::post('admin/payments/{id}', 'AdminPaymentsController@show')->middleware('api_auth');
 
+    Route::post('admin/vendors', 'AdminVendorsController@index')->middleware('api_auth');
+    Route::post('admin/vendors/update', 'AdminVendorsController@update')->middleware('api_auth');
+    Route::post('admin/vendors/delete', 'AdminVendorsController@delete')->middleware('api_auth');
+    Route::post('admin/vendors/store', 'AdminVendorsController@store')->middleware('api_auth');
+    Route::post('admin/vendors/{id}', 'AdminVendorsController@show')->middleware('api_auth');
+
+    Route::post('admin/blog', 'AdminBlogController@index')->middleware('api_auth');
+    Route::post('admin/blog/update', 'AdminBlogController@update')->middleware('api_auth');
+    Route::post('admin/blog/delete', 'AdminBlogController@delete')->middleware('api_auth');
+    Route::post('admin/blog/store', 'AdminBlogController@store')->middleware('api_auth');
+    Route::post('admin/blog/{id}', 'AdminBlogController@show')->middleware('api_auth');
+
     Route::post('admin/pages', 'AdminPageController@index')->middleware('api_auth');
     Route::post('admin/pages/update', 'AdminPageController@update')->middleware('api_auth');
     Route::post('admin/pages/{id}', 'AdminPageController@show')->middleware('api_auth');
