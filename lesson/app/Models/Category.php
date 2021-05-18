@@ -80,7 +80,8 @@ class Category extends Model
     }
     public function getAllPostsByLang($lang) {
         return  DB::table(self::TABLE)
-            ->where('lang', $lang)->get();
+                    ->where('lang', $lang)
+                    ->get();
     }
     public function getPostByLangTitle($lang, $title) {
         return  DB::table(self::TABLE)

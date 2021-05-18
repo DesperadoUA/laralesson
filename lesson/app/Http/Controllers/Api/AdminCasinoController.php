@@ -61,6 +61,7 @@ class AdminCasinoController extends AdminPostsController
         $data = $post->getPostById($id);
         if(!empty(count($data))) {
             $response['body'] = self::dataCommonDecode($data[0]) + self::dataMetaDecode($data[0]);
+            $response['body']['category'] = self::relativeCategory($id);
             $response['reviews'] = Reviews::getPostsByPostId($data[0]->id);
             $response['confirm'] = 'ok';
         }
@@ -78,6 +79,8 @@ class AdminCasinoController extends AdminPostsController
 
         $data_meta = self::dataValidateMetaSave($data_request);
         $post->updateMetaById($data_request['id'], $data_meta);
+
+        self::updateCategory($data_request['id'], $data_request['category']);
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){
