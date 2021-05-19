@@ -346,4 +346,49 @@ class AdminPostsController extends Controller
         $newData['post_type'] = $data->post_type;
         return $newData;
     }
+    protected static function relative($id, $relative_table, $relative_post_type) {
+        $data = [];
+        $current_post = Posts::where('id', $id)->get();
+        if($current_post->isEmpty()) {
+            return $data;
+        }
+        else {
+            $arr_title_relative = [];
+            $list_relative = Posts::where('post_type', $relative_post_type)
+                ->where('lang', $current_post[0]->lang)
+                ->get();
+            if(!$list_relative->isEmpty()) {
+                foreach ($list_relative as $item) $arr_title_relative[] = $item->title;
+            }
+            $data['all_value'] = $arr_title_relative;
+            $arr_relative_id = Relative::getRelativeByPostId($relative_table, $current_post[0]->id);
+            if(empty($arr_relative_id)) $data['current_value'] = [];
+            else {
+                $arr_posts = Posts::whereIn('id', $arr_relative_id)
+                    ->get();
+                $data['current_value'] = [];
+                foreach ($arr_posts as $item) $data['current_value'][] = $item->title;
+            }
+            return $data;
+        }
+    }
+    protected static function updateRelative($id, $relative_table, $arr_titles){
+        DB::table($relative_table)->where('post_id', $id)->delete();
+        if(!empty($arr_titles)) {
+            $current_post = Posts::where('id', $id)
+                ->get();
+            if(!$current_post->isEmpty()) {
+                $arr_posts = Posts::whereIn('title', $arr_titles)
+                    ->get();
+                $data = [];
+                foreach ($arr_posts as $item) {
+                    $data[] = [
+                        'post_id' => $current_post[0]->id,
+                        'relative_id' => $item->id
+                    ];
+                }
+                Relative::insert($relative_table, $data);
+            }
+        }
+    }
 }

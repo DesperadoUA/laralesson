@@ -15,6 +15,7 @@ class AdminBonusesController extends AdminPostsController
         parent::__construct($request);
     }
     const POST_TYPE = 'bonus';
+    const DB_BONUS_CASINO = 'bonus_casino';
     public function index(Request $request)
     {
         $response = [
@@ -62,6 +63,7 @@ class AdminBonusesController extends AdminPostsController
         if(!empty(count($data))) {
             $response['body'] = self::dataCommonDecode($data[0]) + self::dataMetaDecode($data[0]);
             $response['body']['category'] = self::relativeCategory($id);
+            $response['body']['bonus_casino'] = self::relative($id, self::DB_BONUS_CASINO, 'casino');
             $response['reviews'] = Reviews::getPostsByPostId($data[0]->id);
             $response['confirm'] = 'ok';
         }
@@ -81,6 +83,7 @@ class AdminBonusesController extends AdminPostsController
         $post->updateMetaById($data_request['id'], $data_meta);
 
         self::updateCategory($data_request['id'], $data_request['category']);
+        self::updateRelative($data_request['id'], self::DB_BONUS_CASINO, $data_request['bonus_casino']);
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){

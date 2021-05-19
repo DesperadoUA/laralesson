@@ -15,6 +15,8 @@ class AdminCasinoController extends AdminPostsController
         parent::__construct($request);
     }
     const POST_TYPE = 'casino';
+    const DB_CASINO_VENDOR = 'casino_vendor';
+    const DB_CASINO_PAYMENT = 'casino_payment';
     public function index(Request $request)
     {
         $response = [
@@ -62,6 +64,8 @@ class AdminCasinoController extends AdminPostsController
         if(!empty(count($data))) {
             $response['body'] = self::dataCommonDecode($data[0]) + self::dataMetaDecode($data[0]);
             $response['body']['category'] = self::relativeCategory($id);
+            $response['body']['casino_vendor'] = self::relative($id, self::DB_CASINO_VENDOR, 'vendor');
+            $response['body']['casino_payment'] = self::relative($id, self::DB_CASINO_PAYMENT, 'payment');
             $response['reviews'] = Reviews::getPostsByPostId($data[0]->id);
             $response['confirm'] = 'ok';
         }
@@ -81,6 +85,8 @@ class AdminCasinoController extends AdminPostsController
         $post->updateMetaById($data_request['id'], $data_meta);
 
         self::updateCategory($data_request['id'], $data_request['category']);
+        self::updateRelative($data_request['id'], self::DB_CASINO_VENDOR, $data_request['casino_vendor']);
+        self::updateRelative($data_request['id'], self::DB_CASINO_PAYMENT, $data_request['casino_payment']);
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){
