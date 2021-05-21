@@ -15,6 +15,8 @@ class CasinoMeta extends Migration
     {
         Schema::create('casino_meta', function (Blueprint $table) {
             $table->bigInteger('post_id')->unsigned();
+            $table->string('icon');
+            $table->string('license');
             $table->string('bonus');
             $table->string('bonus_wagering');
             $table->string('freespins');

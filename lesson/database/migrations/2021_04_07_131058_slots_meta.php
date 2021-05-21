@@ -16,6 +16,7 @@ class SlotMeta extends Migration
         Schema::create('slot_meta', function (Blueprint $table) {
             $table->bigInteger('post_id')->unsigned();
             $table->string('rtp');
+            $table->integer('rating');
             $table->string('min_bet');
             $table->string('max_bet');
             $table->string('pay_lines');

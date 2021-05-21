@@ -77,5 +77,10 @@ Route::namespace('Api')->group(function () {
 
     Route::post('admin/uploads', 'AdminUploadsController@index')->middleware('api_auth');
 
+    //----- Front controllers ----//
+    //Route::get('pages/home', 'PageController@index');
+    Route::get('settings', 'SettingsController@index');
+    Route::get('options', 'OptionsController@index');
+
 });
 

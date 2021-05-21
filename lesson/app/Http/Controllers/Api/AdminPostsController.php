@@ -16,12 +16,12 @@ class AdminPostsController extends Controller
     {
 
     }
-    const OFFSET            = 0;
-    const LIMIT             = 8;
-    const ORDER_BY          = 'DESC';
-    const ORDER_KEY         = 'create_at';
-    const LANG              = 1;
-    const ARR_LANG          = [
+    const OFFSET                   = 0;
+    const LIMIT                    = 8;
+    const ORDER_BY                 = 'DESC';
+    const ORDER_KEY                = 'create_at';
+    const LANG                     = 1;
+    const ARR_LANG                 = [
         'ru' => 1,
         'ua' => 2
     ];
@@ -355,8 +355,8 @@ class AdminPostsController extends Controller
         else {
             $arr_title_relative = [];
             $list_relative = Posts::where('post_type', $relative_post_type)
-                ->where('lang', $current_post[0]->lang)
-                ->get();
+                                    ->where('lang', $current_post[0]->lang)
+                                    ->get();
             if(!$list_relative->isEmpty()) {
                 foreach ($list_relative as $item) $arr_title_relative[] = $item->title;
             }
@@ -364,8 +364,7 @@ class AdminPostsController extends Controller
             $arr_relative_id = Relative::getRelativeByPostId($relative_table, $current_post[0]->id);
             if(empty($arr_relative_id)) $data['current_value'] = [];
             else {
-                $arr_posts = Posts::whereIn('id', $arr_relative_id)
-                    ->get();
+                $arr_posts = Posts::whereIn('id', $arr_relative_id)->get();
                 $data['current_value'] = [];
                 foreach ($arr_posts as $item) $data['current_value'][] = $item->title;
             }

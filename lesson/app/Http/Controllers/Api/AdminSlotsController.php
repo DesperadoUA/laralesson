@@ -97,6 +97,13 @@ class AdminSlotsController extends AdminPostsController
             $newData['rtp'] = '';
         }
 
+        if(isset($data['rating'])) {
+            $newData['rating'] = (int)$data['rating'];
+        }
+        else {
+            $newData['rating'] = 0;
+        }
+
         if(isset($data['min_bet'])) {
             $newData['min_bet'] = Validate::textValidate($data['min_bet']);
         }
@@ -167,6 +174,7 @@ class AdminSlotsController extends AdminPostsController
     protected static function dataMetaDecode($data){
         $newData = [];
         $newData['rtp'] = htmlspecialchars_decode($data->rtp, ENT_NOQUOTES);
+        $newData['rating'] = (int)$data->rating;
         $newData['min_bet'] = htmlspecialchars_decode($data->min_bet, ENT_NOQUOTES);
         $newData['max_bet'] = htmlspecialchars_decode($data->max_bet, ENT_NOQUOTES);
         $newData['pay_lines'] = htmlspecialchars_decode($data->pay_lines, ENT_NOQUOTES);

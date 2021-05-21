@@ -98,11 +98,26 @@ class AdminCasinoController extends AdminPostsController
             $newData['bonus'] = '';
         }
 
+        if(isset($data['icon'])) {
+            if(empty($data['icon'])) $newData['icon'] = config('constants.DEFAULT_SRC');
+            else $newData['icon'] = $data['icon'];
+        }
+        else {
+            $newData['icon'] = config('constants.DEFAULT_SRC');
+        }
+
         if(isset($data['bonus_wagering'])) {
             $newData['bonus_wagering'] = Validate::textValidate($data['bonus_wagering']);
         }
         else {
             $newData['bonus_wagering'] = '';
+        }
+
+        if(isset($data['license'])) {
+            $newData['license'] = Validate::textValidate($data['license']);
+        }
+        else {
+            $newData['license'] = '';
         }
 
         if(isset($data['freespins'])) {
@@ -249,7 +264,9 @@ class AdminCasinoController extends AdminPostsController
     }
     protected static function dataMetaDecode($data){
         $newData = [];
+        $newData['icon'] = $data->icon;
         $newData['bonus'] = htmlspecialchars_decode($data->bonus, ENT_NOQUOTES);
+        $newData['license'] = htmlspecialchars_decode($data->license, ENT_NOQUOTES);
         $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering, ENT_NOQUOTES);
         $newData['freespins'] = htmlspecialchars_decode($data->freespins, ENT_NOQUOTES);
         $newData['freespins_wagering'] = htmlspecialchars_decode($data->freespins_wagering, ENT_NOQUOTES);
