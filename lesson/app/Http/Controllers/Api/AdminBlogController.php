@@ -97,7 +97,7 @@ class AdminBlogController extends AdminPostsController
     protected static function dataMetaDecode($data){
         $newData = [];
 
-        $newData['author'] = htmlspecialchars_decode($data->author, ENT_NOQUOTES);
+        $newData['author'] = htmlspecialchars_decode($data->author);
 
         return $newData;
     }

@@ -52,6 +52,18 @@ class Posts extends Model
             ->get();
         return $posts;
     }
+    public function getPublicPostById($id) {
+        $t1 = self::TABLE;
+        $t2 = $this->table_meta;
+
+        $post = DB::table($t1)
+            ->where($t1.'.id', $id)
+            ->where($t1.'.status','public')
+            ->join($t2, $t1.'.id', '=', $t2.'.post_id')
+            ->select( $t1.'.*', $t2.'.*')
+            ->get();
+        return $post;
+    }
     public function getPublicPostByUrl($url) {
         $t1 = self::TABLE;
         $t2 = $this->table_meta;
@@ -136,5 +148,18 @@ class Posts extends Model
         DB::table($this->table_meta)
             ->where('post_id', $id)
             ->update($data);
+    }
+    public function getBonusMainPage($lang){
+        $t1 = self::TABLE;
+        $t2 = $this->table_meta;
+        $post = DB::table($t1)
+            ->where( [[$t1.'.lang', $lang], [$t1.'.status', 'public']])
+            ->join($t2, function($join) {
+                $join->on('id', '=', 'post_id')
+                    ->where('show_on_main', '=', 1);
+            })
+            ->select( $t1.'.*', $t2.'.*')
+            ->get();
+        return $post;
     }
 }

@@ -330,17 +330,17 @@ class AdminPostsController extends Controller
     protected static function dataCommonDecode($data) {
         $newData =  [];
         $newData['id'] = $data->id;
-        $newData['title'] =  htmlspecialchars_decode($data->title, ENT_NOQUOTES);
+        $newData['title'] =  htmlspecialchars_decode($data->title);
         $newData['status'] = $data->status;
         $newData['create_at'] = $data->create_at;
         $newData['update_at'] = $data->update_at;
         $newData['slug'] = $data->slug;
-        $newData['content'] = htmlspecialchars_decode($data->content, ENT_NOQUOTES);
-        $newData['description'] = htmlspecialchars_decode($data->description, ENT_NOQUOTES);
-        $newData['h1'] = htmlspecialchars_decode($data->h1, ENT_NOQUOTES);
-        $newData['keywords'] = htmlspecialchars_decode($data->keywords, ENT_NOQUOTES);
-        $newData['meta_title'] = htmlspecialchars_decode($data->meta_title, ENT_NOQUOTES);
-        $newData['short_desc'] = htmlspecialchars_decode($data->short_desc, ENT_NOQUOTES);
+        $newData['content'] = htmlspecialchars_decode($data->content);
+        $newData['description'] = htmlspecialchars_decode($data->description);
+        $newData['h1'] = htmlspecialchars_decode($data->h1);
+        $newData['keywords'] = htmlspecialchars_decode($data->keywords);
+        $newData['meta_title'] = htmlspecialchars_decode($data->meta_title);
+        $newData['short_desc'] = htmlspecialchars_decode($data->short_desc);
         $newData['thumbnail'] = $data->thumbnail;
         $newData['permalink'] = $data->permalink;
         $newData['post_type'] = $data->post_type;

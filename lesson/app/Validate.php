@@ -37,7 +37,7 @@ class Validate
         $newData['title']  = $data->title;
         $newData['editor'] = $data->editor;
         if(in_array($data->editor, self::CONFIG_EDITOR['TEXT_DECODE'])) {
-            $newData['value'] = htmlspecialchars_decode($data->value, ENT_NOQUOTES);
+            $newData['value'] = htmlspecialchars_decode($data->value);
         }
         elseif(in_array($data->editor, self::CONFIG_EDITOR['JSON_DECODE'])) {
             if(empty($data->value)) {

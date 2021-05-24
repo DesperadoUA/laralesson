@@ -265,23 +265,23 @@ class AdminCasinoController extends AdminPostsController
     protected static function dataMetaDecode($data){
         $newData = [];
         $newData['icon'] = $data->icon;
-        $newData['bonus'] = htmlspecialchars_decode($data->bonus, ENT_NOQUOTES);
-        $newData['license'] = htmlspecialchars_decode($data->license, ENT_NOQUOTES);
-        $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering, ENT_NOQUOTES);
-        $newData['freespins'] = htmlspecialchars_decode($data->freespins, ENT_NOQUOTES);
-        $newData['freespins_wagering'] = htmlspecialchars_decode($data->freespins_wagering, ENT_NOQUOTES);
-        $newData['currency'] = htmlspecialchars_decode($data->currency, ENT_NOQUOTES);
+        $newData['bonus'] = htmlspecialchars_decode($data->bonus);
+        $newData['license'] = htmlspecialchars_decode($data->license);
+        $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering);
+        $newData['freespins'] = htmlspecialchars_decode($data->freespins);
+        $newData['freespins_wagering'] = htmlspecialchars_decode($data->freespins_wagering);
+        $newData['currency'] = htmlspecialchars_decode($data->currency);
         if(empty($data->faq)) {
             $newData['faq'] = [];
         }
         else {
-            $newData['faq'] = json_decode($data->faq, true);;
+            $newData['faq'] = json_decode($data->faq, true);
         }
-        $newData['faq_title'] = htmlspecialchars_decode($data->faq_title, ENT_NOQUOTES);
-        $newData['methods_pay'] = htmlspecialchars_decode($data->methods_pay, ENT_NOQUOTES);
-        $newData['methods_payout'] = htmlspecialchars_decode($data->methods_payout, ENT_NOQUOTES);
-        $newData['min_deposit'] = htmlspecialchars_decode($data->min_deposit, ENT_NOQUOTES);
-        $newData['min_payout'] = htmlspecialchars_decode($data->min_payout, ENT_NOQUOTES);
+        $newData['faq_title'] = htmlspecialchars_decode($data->faq_title);
+        $newData['methods_pay'] = htmlspecialchars_decode($data->methods_pay);
+        $newData['methods_payout'] = htmlspecialchars_decode($data->methods_payout);
+        $newData['min_deposit'] = htmlspecialchars_decode($data->min_deposit);
+        $newData['min_payout'] = htmlspecialchars_decode($data->min_payout);
         $newData['rating'] = (int)$data->rating;
         if(empty($data->ref)) {
             $newData['ref'] = [];
@@ -289,11 +289,11 @@ class AdminCasinoController extends AdminPostsController
         else {
             $newData['ref'] = json_decode($data->ref, true);;
         }
-        $newData['sub_title'] = htmlspecialchars_decode($data->sub_title, ENT_NOQUOTES);
-        $newData['valuta'] = htmlspecialchars_decode($data->valuta, ENT_NOQUOTES);
-        $newData['vendors'] = htmlspecialchars_decode($data->vendors, ENT_NOQUOTES);
-        $newData['video_banner'] = htmlspecialchars_decode($data->video_banner, ENT_NOQUOTES);
-        $newData['video_iframe'] = htmlspecialchars_decode($data->video_iframe, ENT_NOQUOTES);
+        $newData['sub_title'] = htmlspecialchars_decode($data->sub_title);
+        $newData['valuta'] = htmlspecialchars_decode($data->valuta);
+        $newData['vendors'] = htmlspecialchars_decode($data->vendors);
+        $newData['video_banner'] = htmlspecialchars_decode($data->video_banner);
+        $newData['video_iframe'] = htmlspecialchars_decode($data->video_iframe);
         $newData['regular_offers'] = $data->regular_offers;
         $newData['live_chat'] = $data->live_chat;
         $newData['live_casino'] = $data->live_casino;

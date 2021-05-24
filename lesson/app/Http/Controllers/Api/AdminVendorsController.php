@@ -108,7 +108,7 @@ class AdminVendorsController extends AdminPostsController
         else {
             $newData['faq'] = json_decode($data->faq, true);;
         }
-        $newData['faq_title'] = htmlspecialchars_decode($data->faq_title, ENT_NOQUOTES);
+        $newData['faq_title'] = htmlspecialchars_decode($data->faq_title);
 
         return $newData;
     }

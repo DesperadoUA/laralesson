@@ -18,6 +18,7 @@ class BonusMeta extends Migration
             $table->string('sum');
             $table->string('wagering');
             $table->integer('rating');
+            $table->boolean('show_on_main')->default(0);
             $table->foreign('post_id')
                 ->references('id')
                 ->on('posts')

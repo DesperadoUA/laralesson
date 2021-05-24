@@ -109,13 +109,20 @@ class AdminBonusesController extends AdminPostsController
             $newData['rating'] = 0;
         }
 
+        if(isset($data['show_on_main'])) {
+            $newData['show_on_main'] = (int)$data['show_on_main'];
+        }
+        else {
+            $newData['show_on_main'] = 0;
+        }
         return $newData;
     }
     protected static function dataMetaDecode($data){
         $newData = [];
-        $newData['bonus'] = htmlspecialchars_decode($data->bonus, ENT_NOQUOTES);
-        $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering, ENT_NOQUOTES);
+        $newData['bonus'] = htmlspecialchars_decode($data->bonus);
+        $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering);
         $newData['rating'] = (int)$data->rating;
+        $newData['show_on_main'] = (int)$data->show_on_main;
         return $newData;
     }
 }

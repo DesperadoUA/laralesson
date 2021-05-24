@@ -14,11 +14,6 @@ use Illuminate\Http\Request;
 */
 
 Route::namespace('Api')->group(function () {
-    Route::get('casino', 'CasinoController@index');
-    Route::get('casino/{id}', 'CasinoController@show');
-
-    Route::get('pages', 'PageController@index');
-    Route::get('pages/{id}', 'PageController@show');
 
     Route::post('login', 'LoginController@index');
     Route::post('logout', 'LoginController@logout');
@@ -78,9 +73,15 @@ Route::namespace('Api')->group(function () {
     Route::post('admin/uploads', 'AdminUploadsController@index')->middleware('api_auth');
 
     //----- Front controllers ----//
-    //Route::get('pages/home', 'PageController@index');
+    Route::get('pages/casino', 'PageController@casino');
+    Route::get('pages/slots', 'PageController@slots');
+    Route::get('pages/main', 'PageController@main');
+
     Route::get('settings', 'SettingsController@index');
     Route::get('options', 'OptionsController@index');
+
+    Route::get('casino', 'CasinoController@index');
+    Route::get('casino/{id}', 'CasinoController@show');
 
 });
 

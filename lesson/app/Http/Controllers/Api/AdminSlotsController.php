@@ -173,12 +173,12 @@ class AdminSlotsController extends AdminPostsController
     }
     protected static function dataMetaDecode($data){
         $newData = [];
-        $newData['rtp'] = htmlspecialchars_decode($data->rtp, ENT_NOQUOTES);
+        $newData['rtp'] = htmlspecialchars_decode($data->rtp);
         $newData['rating'] = (int)$data->rating;
-        $newData['min_bet'] = htmlspecialchars_decode($data->min_bet, ENT_NOQUOTES);
-        $newData['max_bet'] = htmlspecialchars_decode($data->max_bet, ENT_NOQUOTES);
-        $newData['pay_lines'] = htmlspecialchars_decode($data->pay_lines, ENT_NOQUOTES);
-        $newData['reels'] = htmlspecialchars_decode($data->reels, ENT_NOQUOTES);
+        $newData['min_bet'] = htmlspecialchars_decode($data->min_bet);
+        $newData['max_bet'] = htmlspecialchars_decode($data->max_bet);
+        $newData['pay_lines'] = htmlspecialchars_decode($data->pay_lines);
+        $newData['reels'] = htmlspecialchars_decode($data->reels);
         $newData['volatility'] = $data->volatility;
         $newData['bonus_rounds'] = $data->bonus_rounds;
         $newData['free_spins'] = $data->free_spins;
