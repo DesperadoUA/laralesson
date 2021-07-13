@@ -17,6 +17,7 @@ class VendorMeta extends Migration
             $table->bigInteger('post_id')->unsigned();
             $table->text('faq');
             $table->text('faq_title');
+            $table->text('icon');
             $table->unique('post_id');
             $table->foreign('post_id')
                 ->references('id')

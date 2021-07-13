@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use App\Models\Category;
 use App\Validate;
 use Illuminate\Http\Request;
@@ -21,10 +22,7 @@ class AdminPostsController extends Controller
     const ORDER_BY                 = 'DESC';
     const ORDER_KEY                = 'create_at';
     const LANG                     = 1;
-    const ARR_LANG                 = [
-        'ru' => 1,
-        'ua' => 2
-    ];
+    const ARR_LANG                 = ['ru' => 1, 'ua' => 2];
     const DEFAULT_POST_TYPE        = 'casino';
     const SLUG                     = 'casino';
     const CATEGORY_RELATIVE_TABLE  = 'post_category';
@@ -81,6 +79,7 @@ class AdminPostsController extends Controller
             'confirm' => 'ok'
         ];
         Posts::where('id', $request->input('data'))->delete();
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function dataValidateSave($id, $data) {
@@ -119,7 +118,7 @@ class AdminPostsController extends Controller
         }
 
         if(isset($data['content'])) {
-            $newData['content'] = Validate::textValidate($data['content']);
+            $newData['content'] = $data['content'];
         }
         else {
             $newData['content'] = '';
@@ -335,7 +334,7 @@ class AdminPostsController extends Controller
         $newData['create_at'] = $data->create_at;
         $newData['update_at'] = $data->update_at;
         $newData['slug'] = $data->slug;
-        $newData['content'] = htmlspecialchars_decode($data->content);
+        $newData['content'] = $data->content;
         $newData['description'] = htmlspecialchars_decode($data->description);
         $newData['h1'] = htmlspecialchars_decode($data->h1);
         $newData['keywords'] = htmlspecialchars_decode($data->keywords);

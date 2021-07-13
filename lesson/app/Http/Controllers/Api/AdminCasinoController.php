@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\Reviews;
@@ -52,6 +53,7 @@ class AdminCasinoController extends AdminPostsController
         $post = new Posts(['post_type' => self::POST_TYPE]);
         $response['insert_id'] = $post->insert($data_save, $data_meta);
         $response['data_meta'] = $data_meta;
+        Cash::deleteAll();
         return response()->json($response);
     }
     public function show($id) {
@@ -87,6 +89,7 @@ class AdminCasinoController extends AdminPostsController
         self::updateCategory($data_request['id'], $data_request['category']);
         self::updateRelative($data_request['id'], self::DB_CASINO_VENDOR, $data_request['casino_vendor']);
         self::updateRelative($data_request['id'], self::DB_CASINO_PAYMENT, $data_request['casino_payment']);
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){
@@ -134,12 +137,6 @@ class AdminCasinoController extends AdminPostsController
             $newData['freespins_wagering'] = '';
         }
 
-        if(isset($data['currency'])) {
-            $newData['currency'] = $data['currency'];
-        }
-        else {
-            $newData['currency'] = '';
-        }
 
         if(isset($data['faq'])) {
             $newData['faq'] = json_encode($data['faq']);
@@ -197,41 +194,6 @@ class AdminCasinoController extends AdminPostsController
             $newData['ref'] = json_encode([]);
         }
 
-        if(isset($data['sub_title'])) {
-            $newData['sub_title'] = $data['sub_title'];
-        }
-        else {
-            $newData['sub_title'] = '';
-        }
-
-        if(isset($data['valuta'])) {
-            $newData['valuta'] = $data['valuta'];
-        }
-        else {
-            $newData['valuta'] = '';
-        }
-
-        if(isset($data['vendors'])) {
-            $newData['vendors'] = $data['vendors'];
-        }
-        else {
-            $newData['vendors'] = '';
-        }
-
-        if(isset($data['video_banner'])) {
-            $newData['video_banner'] = $data['video_banner'];
-        }
-        else {
-            $newData['video_banner'] = '';
-        }
-
-        if(isset($data['video_iframe'])) {
-            $newData['video_iframe'] = $data['video_iframe'];
-        }
-        else {
-            $newData['video_iframe'] = '';
-        }
-
         if(isset($data['regular_offers'])) {
             $newData['regular_offers'] = $data['regular_offers'];
         }
@@ -260,6 +222,19 @@ class AdminCasinoController extends AdminPostsController
             $newData['vip_program'] = 1;
         }
 
+        if(isset($data['details'])) {
+            $newData['details'] = json_encode($data['details']);
+        }
+        else {
+            $newData['details'] = json_encode([]);
+        }
+        if(isset($data['type_games'])) {
+            $newData['type_games'] = json_encode($data['type_games']);
+        }
+        else {
+            $newData['type_games'] = json_encode([]);
+        }
+
         return $newData;
     }
     protected static function dataMetaDecode($data){
@@ -270,7 +245,6 @@ class AdminCasinoController extends AdminPostsController
         $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering);
         $newData['freespins'] = htmlspecialchars_decode($data->freespins);
         $newData['freespins_wagering'] = htmlspecialchars_decode($data->freespins_wagering);
-        $newData['currency'] = htmlspecialchars_decode($data->currency);
         if(empty($data->faq)) {
             $newData['faq'] = [];
         }
@@ -287,17 +261,30 @@ class AdminCasinoController extends AdminPostsController
             $newData['ref'] = [];
         }
         else {
-            $newData['ref'] = json_decode($data->ref, true);;
+            $newData['ref'] = json_decode($data->ref, true);
         }
-        $newData['sub_title'] = htmlspecialchars_decode($data->sub_title);
-        $newData['valuta'] = htmlspecialchars_decode($data->valuta);
-        $newData['vendors'] = htmlspecialchars_decode($data->vendors);
-        $newData['video_banner'] = htmlspecialchars_decode($data->video_banner);
-        $newData['video_iframe'] = htmlspecialchars_decode($data->video_iframe);
         $newData['regular_offers'] = $data->regular_offers;
         $newData['live_chat'] = $data->live_chat;
         $newData['live_casino'] = $data->live_casino;
         $newData['vip_program'] = $data->vip_program;
+        if(empty($data->details)) {
+            $newData['details'] = [];
+        }
+        else {
+            $newData['details'] = json_decode($data->details, true);
+        }
+        if(empty($data->type_games)) {
+            $newData['type_games'] = [
+                'current_value' => [],
+                'all_value' => config('constants.SINGLE_CASINO_GAMES')
+            ];
+        }
+        else {
+            $newData['type_games'] = [
+                'current_value' => json_decode($data->type_games, true),
+                'all_value' => config('constants.SINGLE_CASINO_GAMES')
+            ];
+        }
         return $newData;
     }
 }

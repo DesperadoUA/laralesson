@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\Reviews;
@@ -49,6 +50,7 @@ class AdminVendorsController extends AdminPostsController
         $post = new Posts(['post_type' => self::POST_TYPE]);
         $response['insert_id'] = $post->insert($data_save, $data_meta);
         $response['data_meta'] = $data_meta;
+        Cash::deleteAll();
         return response()->json($response);
     }
     public function show($id) {
@@ -80,6 +82,7 @@ class AdminVendorsController extends AdminPostsController
         $post->updateMetaById($data_request['id'], $data_meta);
 
         self::updateCategory($data_request['id'], $data_request['category']);
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){
@@ -97,7 +100,11 @@ class AdminVendorsController extends AdminPostsController
         else {
             $newData['faq_title'] = '';
         }
-
+        if(isset($data['icon'])) {
+            $newData['icon'] = $data['icon'];
+        } else {
+            $newData['icon'] = '';
+        }
         return $newData;
     }
     protected static function dataMetaDecode($data){
@@ -109,6 +116,7 @@ class AdminVendorsController extends AdminPostsController
             $newData['faq'] = json_decode($data->faq, true);;
         }
         $newData['faq_title'] = htmlspecialchars_decode($data->faq_title);
+        $newData['icon'] = $data->icon;
 
         return $newData;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Pages;
@@ -79,7 +80,7 @@ class AdminPageController extends Controller
         $data_save = self::dataValidateSave($request->input('data'));
         $post = new Pages();
         $post->updateById($data_request['id'], $data_save);
-
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function dataValidateSave($data) {
@@ -118,7 +119,7 @@ class AdminPageController extends Controller
         }
 
         if(isset($data['content'])) {
-            $newData['content'] = Validate::textValidate($data['content']);
+            $newData['content'] = $data['content'];
         }
         else {
             $newData['content'] = '';

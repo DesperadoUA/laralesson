@@ -17,6 +17,8 @@ class PaymentMeta extends Migration
             $table->bigInteger('post_id')->unsigned();
             $table->text('faq');
             $table->text('faq_title');
+            $table->text('short_text');
+            $table->integer('rating')->default(0);
             $table->unique('post_id');
             $table->foreign('post_id')
                 ->references('id')

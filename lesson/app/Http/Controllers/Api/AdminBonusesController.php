@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\Reviews;
@@ -51,6 +52,7 @@ class AdminBonusesController extends AdminPostsController
         $post = new Posts(['post_type' => self::POST_TYPE]);
         $response['insert_id'] = $post->insert($data_save, $data_meta);
         $response['data_meta'] = $data_meta;
+        Cash::deleteAll();
         return response()->json($response);
     }
     public function show($id) {
@@ -84,6 +86,7 @@ class AdminBonusesController extends AdminPostsController
 
         self::updateCategory($data_request['id'], $data_request['category']);
         self::updateRelative($data_request['id'], self::DB_BONUS_CASINO, $data_request['bonus_casino']);
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){
@@ -115,6 +118,7 @@ class AdminBonusesController extends AdminPostsController
         else {
             $newData['show_on_main'] = 0;
         }
+
         return $newData;
     }
     protected static function dataMetaDecode($data){
@@ -123,6 +127,7 @@ class AdminBonusesController extends AdminPostsController
         $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering);
         $newData['rating'] = (int)$data->rating;
         $newData['show_on_main'] = (int)$data->show_on_main;
+
         return $newData;
     }
 }

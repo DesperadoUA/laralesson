@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -80,6 +81,7 @@ class AdminCategoryController extends AdminPageController
         $data_save = self::dataValidateSave($request->input('data')) + self::checkParentCategorySave($data_request);
         $post = new Category();
         $post->updateById($data_request['id'], $data_save);
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function relativeCategory($id) {

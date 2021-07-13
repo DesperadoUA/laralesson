@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\Reviews;
@@ -51,6 +52,7 @@ class AdminSlotsController extends AdminPostsController
         $post = new Posts(['post_type' => self::POST_TYPE]);
         $response['insert_id'] = $post->insert($data_save, $data_meta);
         $response['data_meta'] = $data_meta;
+        Cash::deleteAll();
         return response()->json($response);
     }
     public function show($id) {
@@ -86,6 +88,7 @@ class AdminSlotsController extends AdminPostsController
         self::updateCategory($data_request['id'], $data_request['category']);
         self::updateRelative($data_request['id'], self::DB_SLOT_CASINO, $data_request['slot_casino']);
         self::updateRelative($data_request['id'], self::DB_SLOT_VENDOR, $data_request['slot_vendor']);
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){
@@ -168,12 +171,36 @@ class AdminSlotsController extends AdminPostsController
         else {
             $newData['wild_symbol'] = 1;
         }
-
+        if(isset($data['icon'])) {
+            $newData['icon'] = $data['icon'];
+        } else {
+            $newData['icon'] = '';
+        }
+        if(isset($data['ref'])) {
+            $newData['ref'] = json_encode($data['ref']);
+        }
+        else {
+            $newData['ref'] = json_encode([]);
+        }
+        if(isset($data['number_rows'])) {
+            $newData['number_rows'] = $data['number_rows'];
+        }
+        else {
+            $newData['number_rows'] = '3';
+        }
+        if(isset($data['type_game'])) {
+            if(count($data['type_game']) === 0) $data['type_game'] = ["Slots"];
+            $newData['type_game'] = json_encode($data['type_game']);
+        }
+        else {
+            $newData['type_game'] = json_encode(["Slots"]);
+        }
         return $newData;
     }
     protected static function dataMetaDecode($data){
         $newData = [];
         $newData['rtp'] = htmlspecialchars_decode($data->rtp);
+        $newData['icon'] = $data->icon;
         $newData['rating'] = (int)$data->rating;
         $newData['min_bet'] = htmlspecialchars_decode($data->min_bet);
         $newData['max_bet'] = htmlspecialchars_decode($data->max_bet);
@@ -184,6 +211,30 @@ class AdminSlotsController extends AdminPostsController
         $newData['free_spins'] = $data->free_spins;
         $newData['scatters'] = $data->scatters;
         $newData['wild_symbol'] = $data->wild_symbol;
+        if(isset($data->number_rows)) {
+            $newData['number_rows'] = $data->number_rows;
+        }
+        else {
+            $newData['number_rows'] = '3';
+        }
+        if(empty($data->ref)) {
+            $newData['ref'] = [];
+        }
+        else {
+            $newData['ref'] = json_decode($data->ref, true);
+        }
+        if(empty($data->type_game)) {
+            $newData['type_game'] = [
+                'current_value' => ["Slots"],
+                'all_value' => config('constants.SINGLE_CASINO_GAMES')
+            ];
+        }
+        else {
+            $newData['type_game'] = [
+                'current_value' => json_decode($data->type_game, true),
+                'all_value' => config('constants.SINGLE_CASINO_GAMES')
+            ];
+        }
         return $newData;
     }
 }

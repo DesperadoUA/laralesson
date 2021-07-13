@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
-    const LIMIT     = 8;
-    const OFFSET    = 0;
-    const TABLE     = 'category';
-    const ORDER_BY  = 'DESC';
-    const ORDER_KEY = 'create_at';
-    const LANG      = 1;
+    const LIMIT       = 8;
+    const OFFSET      = 0;
+    const TABLE       = 'category';
+    const ORDER_BY    = 'DESC';
+    const ORDER_KEY   = 'create_at';
+    const LANG        = 1;
+    const RELATIVE_DB = 'post_category';
+    const POSTS_DB    = 'posts';
 
     public function getPublicPosts($settings = []) {
         $limit     = isset($settings['limit']) ? $settings['limit'] : self::LIMIT;
@@ -88,5 +90,26 @@ class Category extends Model
             ->where('lang', $lang)
             ->where('title', $title)
             ->get();
+    }
+    public function getChildPublicCategory($parent_id){
+        $post = DB::table(self::TABLE)
+            ->where('parent_id', $parent_id)
+            ->select( '*')
+            ->get();
+        return $post;
+    }
+    public function getPublicPostsFromCategory($cat_id){
+        $t1 = self::RELATIVE_DB;
+        $t2 = self::POSTS_DB;
+        $post = DB::table($t1)
+            ->where($t1.'.relative_id', $cat_id)
+            ->join($t2, function($join) {
+                $join->on('id', '=', 'post_id')
+                    ->where('status', '=', 'public');
+            })
+            ->select( $t2.'.*')
+            ->orderBy(self::ORDER_KEY, self::ORDER_BY)
+            ->get();
+        return $post;
     }
 }

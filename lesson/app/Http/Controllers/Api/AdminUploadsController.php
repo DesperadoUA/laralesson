@@ -10,6 +10,7 @@ use App\Models\Pages;
 class AdminUploadsController extends Controller
 {
     const DIR_DOWNLOADS = '/downloads/';
+    const DIR = '/downloads/';
     public function index(Request $request)
     {
         $folderPath = $_SERVER['DOCUMENT_ROOT'].self::DIR_DOWNLOADS;
@@ -27,5 +28,28 @@ class AdminUploadsController extends Controller
         ];
         return response()->json($response);
     }
-
+    public function media(){
+        $files = scandir(public_path() . self::DIR, 1);
+        $result = [];
+        foreach ($files as $item) {
+          if($item !== '.' && $item !== '..') $result[] = getenv('APP_URL').self::DIR.$item;
+        }
+            $response = [
+            'body' => $result,
+            'confirm' => 'ok'
+        ];
+        return response()->json($response);
+    }
+    public function delete(Request $request){
+        $response = [
+            'body' => [],
+            'confirm' => 'error'
+        ];
+        if($request->input('file') !== '') {
+            $arr = explode('/', $request->input('file'));
+            unlink(public_path() . self::DIR . end($arr));
+            $response['confirm'] = 'ok';
+        }
+        return response()->json($response);
+    }
 }

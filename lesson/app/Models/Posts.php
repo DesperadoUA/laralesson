@@ -82,9 +82,10 @@ class Posts extends Model
         DB::table($this->table_meta)->insert($meta_data);
         return $insert_id;
     }
-    public function getTotalCountPublicByLang($lang = self::LANG) {
+    public function getTotalCountPublicByLang($post_type, $lang = self::LANG) {
         return  DB::table(self::TABLE)
                     ->where('status', 'public')
+                    ->where('post_type', $post_type)
                     ->where('lang', $lang)
                     ->count();
     }
@@ -161,5 +162,54 @@ class Posts extends Model
             ->select( $t1.'.*', $t2.'.*')
             ->get();
         return $post;
+    }
+    public function getPublicPostsByArrId($arr_id) {
+        if(empty($arr_id)) return [];
+        $t1 = self::TABLE;
+        $t2 = $this->table_meta;
+
+        $posts = DB::table($t1)
+            ->whereIn($t1.'.id', $arr_id)
+            ->where($t1.'.status',  'public')
+            ->join($t2, $t1.'.id', '=', $t2.'.post_id')
+            ->select( $t1.'.*', $t2.'.*')
+            ->get();
+        return $posts;
+    }
+    public function getPublicPostsByArrIdWithRating($arr_id) {
+        if(empty($arr_id)) return [];
+        $t1 = self::TABLE;
+        $t2 = $this->table_meta;
+
+        $posts = DB::table($t1)
+            ->whereIn($t1.'.id', $arr_id)
+            ->where($t1.'.status',  'public')
+            ->join($t2, $t1.'.id', '=', $t2.'.post_id')
+            ->select( $t1.'.*', $t2.'.*')
+            ->orderBy('rating', self::ORDER_BY)
+            ->get();
+        return $posts;
+    }
+    public static function searchPublicByTitle($lang, $str) {
+        $posts = [];
+        if(!empty($str)) {
+            $posts = DB::table(self::TABLE)
+                ->where('status',  'public')
+                ->where('lang', $lang)
+                ->where('title', 'like', '%'.$str.'%')
+                ->get();
+        }
+        return $posts;
+    }
+    public static function searchByTitle($lang, $post_type, $str) {
+        $posts = [];
+        if(!empty($str)) {
+            $posts = DB::table(self::TABLE)
+                ->where('post_type',  $post_type)
+                ->where('lang', $lang)
+                ->where('title', 'like', '%'.$str.'%')
+                ->get();
+        }
+        return $posts;
     }
 }

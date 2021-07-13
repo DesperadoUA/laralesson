@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\Reviews;
@@ -49,6 +50,7 @@ class AdminPaymentsController extends AdminPostsController
         $post = new Posts(['post_type' => self::POST_TYPE]);
         $response['insert_id'] = $post->insert($data_save, $data_meta);
         $response['data_meta'] = $data_meta;
+        Cash::deleteAll();
         return response()->json($response);
     }
     public function show($id) {
@@ -80,6 +82,7 @@ class AdminPaymentsController extends AdminPostsController
         $post->updateMetaById($data_request['id'], $data_meta);
 
         self::updateCategory($data_request['id'], $data_request['category']);
+        Cash::deleteAll();
         return response()->json($response);
     }
     protected static function dataValidateMetaSave($data){
@@ -97,6 +100,20 @@ class AdminPaymentsController extends AdminPostsController
         else {
             $newData['faq_title'] = '';
         }
+        if(isset($data['short_text'])) {
+            $newData['short_text'] = Validate::textValidate($data['short_text']);
+        }
+        else {
+            $newData['short_text'] = '';
+        }
+
+        if(isset($data['rating'])) {
+            $newData['rating'] = (int)$data['rating'];
+        }
+        else {
+            $newData['rating'] = 0;
+        }
+
 
         return $newData;
     }
@@ -109,6 +126,8 @@ class AdminPaymentsController extends AdminPostsController
             $newData['faq'] = json_decode($data->faq, true);;
         }
         $newData['faq_title'] = htmlspecialchars_decode($data->faq_title);
+        $newData['short_text'] = htmlspecialchars_decode($data->short_text);
+        $newData['rating'] = (int)$data->rating;
 
         return $newData;
     }

@@ -26,7 +26,7 @@ class Pages extends Migration
             $table->string('meta_title');
             $table->string('description');
             $table->string('keywords');
-            $table->text('content');
+            $table->longText('content');
             $table->integer('lang')->default(1);
             $table->timestamp('create_at')->useCurrent();
             $table->timestamp('update_at')->useCurrent();

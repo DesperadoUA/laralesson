@@ -8,9 +8,10 @@ class Validate
 {
     const CONFIG_EDITOR = [
         'TEXT_DECODE' => ['image', 'input', 'rich_text'],
-        'JSON_DECODE' => ['two_input_image', 'input_text'],
+        'JSON_DECODE' => ['two_input_image', 'input_text', 'multiple_menu'],
     ];
     public static function textValidate($str){
+            $str = str_replace('<p></p>', '', $str);
             $str = trim($str);
             $str = stripslashes($str);
             $str = htmlspecialchars($str);
