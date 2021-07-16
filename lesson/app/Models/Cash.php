@@ -11,13 +11,13 @@ class Cash extends Model
     {
         parent::__construct([]);
     }
-    public static function get($url) {
+    public static function get($url){
         $posts = DB::table(self::TABLE)
                      ->where('url',  $url)
                      ->get();
         return $posts;
     }
-    public static function store($url, $data) {
+    public static function store($url, $data){
         $data_insert = [
             'url' => $url,
             'data' => $data
