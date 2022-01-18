@@ -14,6 +14,7 @@ class SlotController extends PostController
     const LIMIT     = 10;
     const SLOT_VENDOR_RELATIVE_DB = 'slot_vendor';
     const SLOT_CASINO_RELATIVE_DB = 'slot_casino';
+    const POPULAR_CASINO = 3;
 
     public function index(Request $request)
     {
@@ -65,11 +66,16 @@ class SlotController extends PostController
 
             $response['body']['casino'] = [];
             $arr_casino = Relative::getRelativeByPostId(self::SLOT_CASINO_RELATIVE_DB, $data[0]->id);
+            $casino = new Posts(['post_type'=> 'casino']);
             if(!empty($arr_casino)) {
-                $casino = new Posts(['post_type'=> 'casino']);
                 $response['body']['casino'] = CardBuilder::casinoCard($casino->getPublicPostsByArrId($arr_casino));
             }
-
+            $settings = [
+                'lang'      => $data[0]->lang,
+                'limit'     => self::POPULAR_CASINO,
+                'order_key' => 'rating'
+            ];
+            $response['body']['popular_casino'] = CardBuilder::casinoCard($casino->getPublicPosts($settings));
             $response['confirm'] = 'ok';
             Cash::store(url()->current(), json_encode($response));
         }

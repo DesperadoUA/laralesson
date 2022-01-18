@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Options;
+use Illuminate\Support\Facades\DB;
 use App\Validate;
 
 class AdminOptionsController extends Controller
@@ -36,6 +37,15 @@ class AdminOptionsController extends Controller
         $data_request = $request->input('data');
         $data_save = Validate::componentsLibValidateSave($request->input('data'));
         $post->updateById($data_request['id'], $data_save);
+        return response()->json($response);
+    }
+    public function colorScheme(Request $request) {
+        $response['confirm'] = 'ok';
+        $id = $request->input('id');
+        $color = json_encode($request->input('colorScheme'));
+        DB::table('users')
+            ->where('id', $id)
+            ->update(['color' => $color]);
         return response()->json($response);
     }
 }

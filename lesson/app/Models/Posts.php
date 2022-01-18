@@ -52,6 +52,28 @@ class Posts extends Model
             ->get();
         return $posts;
     }
+    public function getHidePosts($settings = []) {
+        $limit     = isset($settings['limit']) ? $settings['limit'] : self::LIMIT;
+        $offset    = isset($settings['offset']) ? $settings['offset'] : self::OFFSET;
+        $order_by  = isset($settings['order_by']) ? $settings['order_by'] : self::ORDER_BY;
+        $order_key = isset($settings['order_key']) ? $settings['order_key'] : self::ORDER_KEY;
+        $lang      = isset($settings['lang']) ? $settings['lang'] : self::LANG;
+
+        $t1 = self::TABLE;
+        $t2 = $this->table_meta;
+
+        $posts = DB::table($t1)
+            ->where($t1.'.status',  'hide')
+            ->where($t1.'.post_type', $this->post_type)
+            ->where($t1.'.lang', $lang)
+            ->join($t2, $t1.'.id', '=', $t2.'.post_id')
+            ->select( $t1.'.*', $t2.'.*')
+            ->offset($offset)
+            ->limit($limit)
+            ->orderBy($order_key, $order_by)
+            ->get();
+        return $posts;
+    }
     public function getPublicPostById($id) {
         $t1 = self::TABLE;
         $t2 = $this->table_meta;
@@ -160,6 +182,7 @@ class Posts extends Model
                     ->where('show_on_main', '=', 1);
             })
             ->select( $t1.'.*', $t2.'.*')
+            ->orderBy('rating', self::ORDER_BY)
             ->get();
         return $post;
     }

@@ -25,6 +25,8 @@ class CardBuilder {
                        'short_desc' => strip_tags(Str::substr(htmlspecialchars_decode($item->content), 0, self::LENGTH_SHORT_DESC).'...'),
                        'bonus' => $current_casino[0]->bonus,
                        'ref' => json_decode($current_casino[0]->ref),
+                       'casino_title' => $current_casino[0]->title,
+                       'casino_permalink' => '/'.$current_casino[0]->slug.'/'.$current_casino[0]->permalink,
                        'thumbnail' => $current_casino[0]->thumbnail,
                        'bonus_self' => htmlspecialchars_decode($item->bonus)
                    ];
@@ -171,6 +173,23 @@ class CardBuilder {
                 'title' => $item->title,
                 'permalink' => '/admin/'.$item->post_type.'/'.$item->id
             ];
+        }
+        return $posts;
+    }
+    static function seoAdminCard($arr_posts) {
+        if(empty($arr_posts)) return [];
+        $posts = [];
+        foreach ($arr_posts as $item) {
+            $currentData = [
+                'title' => $item->title,
+                'status' => $item->status,
+                'meta_title' => $item->meta_title,
+                'description' => $item->description,
+                'id' => $item->id
+            ];
+            if(isset($item->rating)) $currentData['rating'] = $item->rating;
+            if(isset($item->ref)) $currentData['ref'] = json_decode($item->ref);
+            $posts[] = $currentData;
         }
         return $posts;
     }

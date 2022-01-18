@@ -61,6 +61,7 @@ class AdminPostsController extends Controller
             if(!$current_post->isEmpty()) {
                 $arr_category = DB::table(self::CATEGORY_TABLE)
                                     ->whereIn('title', $arr_titles)
+                                    ->where('lang', $current_post[0]->lang)
                                     ->get();
                 $data = [];
                 foreach ($arr_category as $item) {
@@ -215,7 +216,7 @@ class AdminPostsController extends Controller
         }
 
         if(isset($data['content'])) {
-            $newData['content'] = Validate::textValidate($data['content']);
+            $newData['content'] = $data['content'];
         }
         else {
             $newData['content'] = '';

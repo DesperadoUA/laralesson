@@ -169,7 +169,13 @@ class CategoryController extends Controller
         $newData['meta_title'] = htmlspecialchars_decode($data->meta_title);
         $newData['description'] = htmlspecialchars_decode($data->description);
         $newData['keywords'] = htmlspecialchars_decode($data->keywords);
-        $newData['content'] = htmlspecialchars_decode($data->content);
+        $str = htmlspecialchars_decode(html_entity_decode($data->content));
+        $str = str_replace('<pre', '<div', $str);
+        $str = str_replace('</pre', '</div', $str);
+        $str = str_replace('&nbsp;', '', $str);
+        $str = str_replace( '<p><br></p>', '', $str);
+        $str = str_replace( '<p></p>', '', $str);
+        $newData['content'] = $str;
         return $newData;
     }
     protected static function dataForCasinoCategory($url) {

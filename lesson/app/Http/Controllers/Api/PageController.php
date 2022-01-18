@@ -16,7 +16,7 @@ class PageController extends Controller
     const POST_TYPE = 'page';
     const OFFSET    = 0;
     const LIMIT     = 8;
-    const MAIN_PAGE_LIMIT_CASINO = 12;
+    const MAIN_PAGE_LIMIT_CASINO = 1000;
     const LIMIT_POPULAR_SLOTS = 4;
     const LIMIT_POPULAR_BONUS = 4;
     const LIMIT_NEW_CASINO = 4;

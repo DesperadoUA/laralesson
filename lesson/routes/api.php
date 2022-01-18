@@ -17,6 +17,7 @@ Route::namespace('Api')->group(function () {
 
     Route::post('login', 'LoginController@index');
     Route::post('logout', 'LoginController@logout');
+    Route::post('check-user', 'LoginController@checkUser');
 
     Route::post('admin/casino', 'AdminCasinoController@index')->middleware('api_auth');
     Route::post('admin/casino/update', 'AdminCasinoController@update')->middleware('api_auth');
@@ -77,6 +78,12 @@ Route::namespace('Api')->group(function () {
     Route::post('admin/options', 'AdminOptionsController@index')->middleware('api_auth');
     Route::post('admin/options/update', 'AdminOptionsController@update')->middleware('api_auth');
     Route::post('admin/options/{id}', 'AdminOptionsController@show')->middleware('api_auth');
+    Route::post('admin/color-scheme', 'AdminOptionsController@colorScheme')->middleware('api_auth');
+
+    Route::post('admin/seo/post-types', 'AdminSeoController@postTypes')->middleware('api_auth');
+    Route::post('admin/seo', 'AdminSeoController@index')->middleware('api_auth');
+    Route::post('admin/seo/update', 'AdminSeoController@update')->middleware('api_auth');
+    Route::post('admin/seo/filters', 'AdminSeoController@filters')->middleware('api_auth');
 
     Route::post('admin/settings', 'AdminSettingsController@index')->middleware('api_auth');
     Route::post('admin/settings/update', 'AdminSettingsController@update')->middleware('api_auth');

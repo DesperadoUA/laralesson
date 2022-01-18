@@ -41,7 +41,7 @@ class Users extends Model
             ->update($data);
 
         return DB::table(self::TABLE)
-                   ->select('id', 'remember_token as session', 'role')
+                   ->select('id', 'remember_token as session', 'role', 'color')
                    ->where('name', $data['name'])
                    ->where('password', $data['password'])
                    ->first();
