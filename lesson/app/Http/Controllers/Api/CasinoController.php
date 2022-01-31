@@ -115,6 +115,7 @@ class CasinoController extends PostController
         $newData['min_deposit'] = htmlspecialchars_decode($data->min_deposit);
         $newData['min_payout'] = htmlspecialchars_decode($data->min_payout);
         $newData['rating'] = (int)$data->rating;
+        $newData['close'] = (int)$data->close;
         if(empty($data->ref)) {
             $newData['ref'] = [];
         }

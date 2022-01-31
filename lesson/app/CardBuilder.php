@@ -53,7 +53,8 @@ class CardBuilder {
                 'freespins' => $item->freespins,
                 'freespins_wagering' => $item->freespins_wagering,
                 'icon' => $item->icon,
-                'title' => $item->title
+                'title' => $item->title,
+                'close' => $item->close
             ];
          }
         return $posts;
