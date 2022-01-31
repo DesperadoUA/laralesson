@@ -193,5 +193,13 @@ class CardBuilder {
         }
         return $posts;
     }
+    static function forumUser($user) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'thumbnail' => $user->thumbnail,
+            'session' => $user->remember_token
+        ];
+    }
 }
 

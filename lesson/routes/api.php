@@ -18,6 +18,7 @@ Route::namespace('Api')->group(function () {
     Route::post('login', 'LoginController@index');
     Route::post('logout', 'LoginController@logout');
     Route::post('check-user', 'LoginController@checkUser');
+    Route::post('forum-user/add-candidate', 'ForumUserController@addCandidate');
 
     Route::post('admin/casino', 'AdminCasinoController@index')->middleware('api_auth');
     Route::post('admin/casino/update', 'AdminCasinoController@update')->middleware('api_auth');
@@ -139,6 +140,10 @@ Route::namespace('Api')->group(function () {
     Route::get('blog/{id}', 'BlogController@show')->middleware('cash');
     Route::get('news', 'NewsController@index');
     Route::get('news/{id}', 'NewsController@show')->middleware('cash');
+    Route::get('candidate/{id}', 'CandidateController@show');
+    Route::post('forum-user/login', 'ForumUserController@login');
+    Route::post('forum-user/logout', 'ForumUserController@logout');
+    Route::post('forum-user/check-user', 'ForumUserController@checkUser');
 
     Route::get('settings', 'SettingsController@index');
     Route::get('options', 'OptionsController@index');

@@ -1,6 +1,9 @@
 <?php
 return [
     'DEFAULT_SRC' => 'http://'.$_SERVER['SERVER_NAME'].':8000/img/default.jpg',
+    'DEFAULT_USER_SRC' => 'http://'.$_SERVER['SERVER_NAME'].':8000/img/default_user.jpg',
+    'MAIL' => 'k.lazarev@cleack.com',
+    'FRONT_DOMAIN' => 'https://onlinecasino.ua',
     'LANG' => [
         '1' => 'ru',
         '2' => 'ua'
