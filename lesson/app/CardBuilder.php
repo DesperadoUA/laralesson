@@ -22,6 +22,7 @@ class CardBuilder {
                        'title' => $current_casino[0]->title,
                        'icon'  => $current_casino[0]->icon,
                        'rating' => $item->rating,
+                       'close' => $item->close,
                        'short_desc' => strip_tags(Str::substr(htmlspecialchars_decode($item->content), 0, self::LENGTH_SHORT_DESC).'...'),
                        'bonus' => $current_casino[0]->bonus,
                        'ref' => json_decode($current_casino[0]->ref),
