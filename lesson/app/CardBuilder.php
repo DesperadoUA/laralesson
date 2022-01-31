@@ -22,6 +22,7 @@ class CardBuilder {
                        'title' => $current_casino[0]->title,
                        'icon'  => $current_casino[0]->icon,
                        'rating' => $item->rating,
+                       'close' => $item->close,
                        'short_desc' => strip_tags(Str::substr(htmlspecialchars_decode($item->content), 0, self::LENGTH_SHORT_DESC).'...'),
                        'bonus' => $current_casino[0]->bonus,
                        'ref' => json_decode($current_casino[0]->ref),
@@ -53,7 +54,8 @@ class CardBuilder {
                 'freespins' => $item->freespins,
                 'freespins_wagering' => $item->freespins_wagering,
                 'icon' => $item->icon,
-                'title' => $item->title
+                'title' => $item->title,
+                'close' => $item->close
             ];
          }
         return $posts;

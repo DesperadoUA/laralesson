@@ -119,6 +119,12 @@ class AdminBonusesController extends AdminPostsController
             $newData['show_on_main'] = 0;
         }
 
+        if (isset($data['close'])) {
+            $newData['close'] = (int)$data['close'];
+        } else {
+            $newData['close'] = 0;
+        }
+
         return $newData;
     }
     protected static function dataMetaDecode($data){
@@ -127,6 +133,7 @@ class AdminBonusesController extends AdminPostsController
         $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering);
         $newData['rating'] = (int)$data->rating;
         $newData['show_on_main'] = (int)$data->show_on_main;
+        $newData['close'] = (int)$data->close;
 
         return $newData;
     }

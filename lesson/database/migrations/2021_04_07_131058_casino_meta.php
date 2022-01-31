@@ -30,6 +30,7 @@ class CasinoMeta extends Migration
             $table->integer('rating')->default(0);
             $table->string('ref');
             $table->unique('post_id');
+            $table->boolean('close')->default(0);
             $table->boolean('regular_offers')->default(1);
             $table->boolean('live_chat')->default(1);
             $table->boolean('live_casino')->default(1);

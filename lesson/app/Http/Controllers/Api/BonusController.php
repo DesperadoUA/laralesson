@@ -66,6 +66,7 @@ class BonusController extends PostController
         $newData['bonus_wagering'] = htmlspecialchars_decode($data->bonus_wagering);
         $newData['rating'] = (int)$data->rating;
         $newData['show_on_main'] = (int)$data->show_on_main;
+        $newData['close'] = (int)$data->close;
 
         return $newData;
     }
