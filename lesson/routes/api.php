@@ -142,8 +142,14 @@ Route::namespace('Api')->group(function () {
     Route::get('news/{id}', 'NewsController@show')->middleware('cash');
     Route::get('candidate/{id}', 'CandidateController@show');
     Route::post('forum-user/login', 'ForumUserController@login');
-    Route::post('forum-user/logout', 'ForumUserController@logout');
+    Route::post('forum-user/logout', 'ForumUserController@logout')->middleware('forum_auth');
+    Route::post('forum-user/change-password', 'ForumUserController@changePassword')->middleware('forum_auth');
+    Route::post('forum-user/delete-account', 'ForumUserController@deleteAccount')->middleware('forum_auth');
     Route::post('forum-user/check-user', 'ForumUserController@checkUser');
+    Route::post('tickets/store', 'TicketsController@store')->middleware('forum_auth');
+    Route::post('tickets/listCasino', 'TicketsController@listCasino')->middleware('forum_auth');
+    Route::post('tickets/user-tickets', 'TicketsController@userTickets')->middleware('forum_auth');
+
 
     Route::get('settings', 'SettingsController@index');
     Route::get('options', 'OptionsController@index');

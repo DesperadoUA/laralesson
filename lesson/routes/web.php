@@ -15,3 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('support', 'SupportController@index');
+Route::get('ref', 'SupportController@ref');

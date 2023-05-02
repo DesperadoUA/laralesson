@@ -235,4 +235,15 @@ class Posts extends Model
         }
         return $posts;
     }
+    public static function getPostByTitle($lang, $post_type, $title) {
+        $posts = [];
+        if(!empty($title)) {
+            $posts = DB::table(self::TABLE)
+                ->where('post_type',  $post_type)
+                ->where('lang', $lang)
+                ->where('title', $title)
+                ->get();
+        }
+        return $posts;
+    }
 }

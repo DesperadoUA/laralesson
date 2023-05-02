@@ -169,6 +169,8 @@ class CategoryController extends Controller
         $newData['meta_title'] = htmlspecialchars_decode($data->meta_title);
         $newData['description'] = htmlspecialchars_decode($data->description);
         $newData['keywords'] = htmlspecialchars_decode($data->keywords);
+        $newData['index_seo'] = $data->index_seo;
+        $newData['follow'] = $data->follow;
         $str = htmlspecialchars_decode(html_entity_decode($data->content));
         $str = str_replace('<pre', '<div', $str);
         $str = str_replace('</pre', '</div', $str);

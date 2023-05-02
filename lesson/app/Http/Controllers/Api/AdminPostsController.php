@@ -104,6 +104,20 @@ class AdminPostsController extends Controller
             $newData['status'] = 'public';
         }
 
+        if(isset($data['index_seo'])) {
+            $newData['index_seo'] = $data['index_seo'];
+        }
+        else {
+            $newData['index_seo'] = 1;
+        }
+
+        if(isset($data['follow'])) {
+            $newData['follow'] = $data['follow'];
+        }
+        else {
+            $newData['follow'] = 1;
+        }
+
         if(isset($data['create_at'])) {
             $newData['create_at'] = $data['create_at'];
         }
@@ -199,6 +213,20 @@ class AdminPostsController extends Controller
         }
         else {
             $newData['status'] = 'public';
+        }
+
+        if(isset($data['index_seo'])) {
+            $newData['index_seo'] = $data['index_seo'];
+        }
+        else {
+            $newData['index_seo'] = 1;
+        }
+
+        if(isset($data['follow'])) {
+            $newData['follow'] = $data['follow'];
+        }
+        else {
+            $newData['follow'] = 1;
         }
 
         if(isset($data['create_at'])) {
@@ -335,6 +363,8 @@ class AdminPostsController extends Controller
         $newData['create_at'] = $data->create_at;
         $newData['update_at'] = $data->update_at;
         $newData['slug'] = $data->slug;
+        $newData['index_seo'] = $data->index_seo;
+        $newData['follow'] = $data->follow;
         $newData['content'] = $data->content;
         $newData['description'] = htmlspecialchars_decode($data->description);
         $newData['h1'] = htmlspecialchars_decode($data->h1);

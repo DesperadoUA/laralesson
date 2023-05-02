@@ -203,5 +203,28 @@ class CardBuilder {
             'session' => $user->remember_token
         ];
     }
+    static function ticketCard($arr_posts) {
+        if(empty($arr_posts)) return [];
+        $posts = [];
+        foreach ($arr_posts as $item) {
+            $casino_db = new Posts(['post_type' => 'casino']);
+            $current_casino = $casino_db->getPublicPostById($item->casino_id);
+            $thumbnail = '';
+            if(!empty($current_casino)) $thumbnail = $current_casino[0]->thumbnail;
+            $title = '';
+            if(!empty($current_casino)) $title = $current_casino[0]->title;
+            $posts[] = [
+                'id' => $item->id,
+                'status' => $item->status,
+                'admin_comment' => $item->admin_comment,
+                'close' => $item->close,
+                'created_at' => $item->created_at,
+                'thumbnail' => $thumbnail,
+                'title' => $title,
+                'content' => $item->content
+            ];
+        }
+        return $posts;
+    }
 }
 

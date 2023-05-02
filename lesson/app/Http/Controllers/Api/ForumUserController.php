@@ -52,9 +52,30 @@ class ForumUserController extends Controller
     }
     public function logout(Request $request) {
         $res = [
-            'confirm' => 'error',
-            'error' => []
+            'confirm' => 'ok'
         ];
+        $id = $request->input('id');
+        $session = $request->input('session');
+        ForumUsers::logout($id, $session);
+        return response()->json($res);
+    }
+    public function changePassword(Request $request){
+        $res = [
+            'confirm' => 'ok'
+        ];
+        $id = $request->input('id');
+        $session = $request->input('session');
+        $password = $request->input('password');
+        ForumUsers::changePassword($id, $session, $password);
+        return response()->json($res);
+    }
+    public function deleteAccount(Request $request){
+        $res = [
+            'confirm' => 'ok'
+        ];
+        $id = $request->input('id');
+        $session = $request->input('session');
+        ForumUsers::changeStatusCandidate($id, $session);
         return response()->json($res);
     }
     public function checkUser(Request $request) {

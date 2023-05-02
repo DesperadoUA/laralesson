@@ -5,92 +5,61 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ForumUsers;
+use App\Models\Tickets;
+use App\Models\Posts;
 use Illuminate\Support\Str;
-use App\Sender;
 use App\CardBuilder;
 
-class ForumUserController extends Controller
+class TicketsController extends Controller
 {
-    public function addCandidate(Request $request){
-        $res = [
-            'confirm' => 'error',
-            'error' => []
-        ];
-        $name = $request->input('name');
-        $email = $request->input('email');
-        $password = $request->input('password');
-        if(!ForumUsers::checkUniqueEmail($email)) $res['error'][] = "Така поштова скринька вже існує";
-        if(!ForumUsers::checkUniqueName($name)) $res['error'][] = "Такий нік зайнятий";
-
-        if(empty($res['error'])) {
-            $data = [
-                'name' => $name,
-                'email' => $email,
-                'password' => md5($password),
-                'thumbnail' => config('constants.DEFAULT_USER_SRC'),
-                'registration_token' => md5(Str::random(10))
-            ];
-            ForumUsers::insert($data);
-            Sender::mailCandidate($data['email'], $data['registration_token']);
-            $res['confirm'] = 'ok';
-        }
-        return response()->json($res);
-    }
-    public function login(Request $request) {
+    const CASINO_LIMIT = 10000;
+    const CASINO_POST_TYPE = 'casino';
+    const LANG = 1;
+    public function store(Request $request){
         $res = [
             'confirm' => 'error',
             'body' => []
         ];
-        $email = $request->input('email');
-        $password = md5($request->input('password'));
-        if(ForumUsers::checkLogin($email, $password)) {
-            ForumUsers::setRememberToken($email);
-            $res['body'] = CardBuilder::forumUser(ForumUsers::getUserByEmail($email));
-            $res['confirm'] = 'ok';
+        $title = $request->input('casino');
+        $content = $request->input('content');
+        $casino = Posts::getPostByTitle(self::LANG, self::CASINO_POST_TYPE, $title);
+        if(!empty($casino)) {
+            $data = [
+                'forum_user_id' => $request->input('id'),
+                'casino_id' => $casino[0]->id,
+                'content' => $content,
+                'admin_comment' => ''
+            ];
+            Tickets::insert($data);
         }
         return response()->json($res);
     }
-    public function logout(Request $request) {
+    public function listCasino(){
         $res = [
-            'confirm' => 'ok'
+            'confirm' => 'error',
+            'error' => []
         ];
-        $id = $request->input('id');
-        $session = $request->input('session');
-        ForumUsers::logout($id, $session);
+        $posts = new Posts(['post_type' => self::CASINO_POST_TYPE]);
+        $settings = [
+            'limit' => self::CASINO_LIMIT
+        ];
+        $data = $posts->getPublicPosts($settings);
+        if(!$data->isEmpty()) {
+            $res['confirm'] = 'ok';
+            $res['body'] = CardBuilder::searchCard($data);
+        }
         return response()->json($res);
     }
-    public function changePassword(Request $request){
+    public function userTickets(Request $request) {
         $res = [
-            'confirm' => 'ok'
+            'confirm' => 'error',
+            'body' => []
         ];
-        $id = $request->input('id');
-        $session = $request->input('session');
-        $password = $request->input('password');
-        ForumUsers::changePassword($id, $session, $password);
-        return response()->json($res);
-    }
-    public function deleteAccount(Request $request){
-        $res = [
-            'confirm' => 'ok'
-        ];
-        $id = $request->input('id');
-        $session = $request->input('session');
-        ForumUsers::changeStatusCandidate($id, $session);
-        return response()->json($res);
-    }
-    public function checkUser(Request $request) {
-        $res = [
-            'confirm' => 'error'
-        ];
-        $data = [
-            'id' => $request->input('id'),
-            'remember_token' => $request->input('session')
-        ];
-
-        if(ForumUsers::checkAuth($data['id'], $data['remember_token'])) {
-            $res = [
-                'confirm' => 'ok'
-            ];
+        $forum_user_id = $request->input('id');
+        $posts = Tickets::getTicketsByUserId($forum_user_id);
+        if(!empty($posts)) {
+            $res['confirm'] = 'ok';
+            $res['body'] = CardBuilder::ticketCard($posts);
         }
         return response()->json($res);
     }

@@ -19,6 +19,8 @@ class PostController extends Controller
         $newData['create_at'] = $data->create_at;
         $newData['update_at'] = $data->update_at;
         $newData['slug'] = $data->slug;
+        $newData['index_seo'] = $data->index_seo;
+        $newData['follow'] = $data->follow;
         $str = str_replace('<pre', '<div', $data->content);
         $str = str_replace('</pre', '</div', $str);
         $str = str_replace('&nbsp;', '', $str);

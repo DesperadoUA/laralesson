@@ -68,6 +68,35 @@ class ForumUsers extends Model
             ->where('email',  $email)
             ->update($data);
     }
+    static function logout($id, $session) {
+        $data = [
+            'remember_token' => ''
+        ];
+        DB::table(self::TABLE)
+            ->where('id',  $id)
+            ->where('remember_token',  $session)
+            ->update($data);
+    }
+    static function changePassword($id, $session, $password) {
+        $data = [
+            'password' => md5($password)
+        ];
+        DB::table(self::TABLE)
+            ->where('id',  $id)
+            ->where('remember_token',  $session)
+            ->update($data);
+    }
+    static function changeStatusCandidate($id, $session) {
+        $data = [
+            'role' => 'candidate',
+            'remember_token' => '',
+            'registration_token' => ''
+        ];
+        DB::table(self::TABLE)
+            ->where('id',  $id)
+            ->where('remember_token',  $session)
+            ->update($data);
+    }
     static function getUserByEmail($email){
         $candidate = DB::table(self::TABLE)
                         ->where('email',  $email)

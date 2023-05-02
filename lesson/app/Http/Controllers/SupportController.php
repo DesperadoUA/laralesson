@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cash;
 use App\Models\Category;
+use App\Models\Posts;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller
@@ -32,5 +32,19 @@ class SupportController extends Controller
         return response()->json($response);
         //return htmlspecialchars_decode($data[0]->content);
     }
-
+    public function ref(){
+        $data = [];
+        $post = new Posts(['post_type' => 'casino']);
+        $settings = [
+            'limit' => 10000
+        ];
+        $arr_posts = $post->getPosts($settings);
+        foreach ($arr_posts as $item) {
+            $data[] = [
+                'title' => $item->title,
+                'ref' => json_decode($item->ref, true)
+            ];
+        }
+        return view('ref', ['posts' => $data]);
+    }
 }
