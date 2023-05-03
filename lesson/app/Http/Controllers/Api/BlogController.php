@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\CardBuilder;
 use App\Models\Posts;
+use App\Models\Pages;
 use App\Models\Cash;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,7 @@ class BlogController extends PostController
             $response = [
                 'body' => [
                     'posts' => $arr,
-                    'total' =>  $posts->getTotalCountPublicByLang(self::POST_TYPE, $settings['lang'])
+                    'total' =>  $posts->getTotalCountPublicByLang(self::POST_TYPE, $settings['lang']),
                 ],
                 'confirm' => 'ok'
             ];
@@ -54,6 +55,9 @@ class BlogController extends PostController
         if(!$data->isEmpty()) {
             $response['body'] = $data[0];
             $response['body'] = self::dataCommonDecode($data[0]) + self::dataMetaDecode($data[0]);
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1; 
             $settings = [
                 'lang'      => $data[0]->lang,
                 'limit'     => self::LIMIT_LAST_POSTS,

@@ -105,6 +105,7 @@ Route::namespace('Api')->group(function () {
     Route::get('pages/'.config('constants.PAGES.INTERVIEW'), 'PageController@interview')->middleware('cash');
     Route::get('pages/'.config('constants.PAGES.USEFUL'), 'PageController@useful')->middleware('cash');
     Route::get('pages/'.config('constants.PAGES.SITE_MAP'), 'PageController@sitemap');
+    Route::get('pages/'.config('constants.PAGES.AUTHOR'), 'PageController@author');
     Route::get(config('constants.PAGES.SEARCH'), 'PageController@search');
 
     Route::get('category/'.config('constants.CATEGORY.CASINO'), 'CategoryController@casino')->middleware('cash');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\CardBuilder;
 use App\Models\Cash;
 use App\Models\Posts;
+use App\Models\Pages;
 use App\Models\Relative;
 use Illuminate\Http\Request;
 
@@ -56,6 +57,9 @@ class VendorController extends PostController
         if(!$data->isEmpty()) {
             $response['body'] = $data[0];
             $response['body'] = self::dataCommonDecode($data[0]) + self::dataMetaDecode($data[0]);
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1; 
             $response['body']['casino'] = [];
             $arr_casino = Relative::getPostIdByRelative(self::CASINO_VENDOR_RELATIVE_DB, $data[0]->id);
             if(!empty($arr_casino)) {

@@ -84,6 +84,9 @@ class PageController extends Controller
             $response['body'] = self::dataMetaDecode($data[0]);
             $response['body']['category_link'] = [];
             $parent_category = $category->getPublicPostByUrl(config('constants.CATEGORY.CASINO'));
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1;
             if(!$parent_category->isEmpty()) {
                 $response['body']['category_link'] = CardBuilder::categoryLinks($category->getChildPublicCategory($parent_category[0]->id));
             }
@@ -162,6 +165,9 @@ class PageController extends Controller
         if(!$data->isEmpty()) {
             $bonus = new Posts(['post_type' => 'bonus']);
             $response['body'] = self::dataMetaDecode($data[0]);
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1; 
             $response['body']['bonuses'] = CardBuilder::bonusCard($bonus->getBonusMainPage($data[0]->lang));
             $settings = [
                 'limit' => 1000,
@@ -264,6 +270,20 @@ class PageController extends Controller
         }
         return response()->json($response);
     }
+    public function author(){
+        $response = [
+            'body' => [],
+            'confirm' => 'error'
+        ];
+        $post = new Pages();
+        $data = $post->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+        if(!$data->isEmpty()) {
+            $response['body'] = self::dataMetaDecode($data[0]);
+            $response['confirm'] = 'ok';
+            Cash::store(url()->current(), json_encode($response));
+        }
+        return response()->json($response);
+    }
     protected static function dataMetaDecode($data){
         $newData = [];
         $newData['title'] = htmlspecialchars_decode($data->title);
@@ -274,6 +294,8 @@ class PageController extends Controller
         $newData['keywords'] = htmlspecialchars_decode($data->keywords);
         $newData['index_seo'] = $data->index_seo;
         $newData['follow'] = $data->follow;
+        $newData['create_at'] = $data->create_at;
+        $newData['thumbnail'] = $data->thumbnail;
         $str = str_replace('<pre', '<div', $data->content);
         $str = str_replace('</pre', '</div', $str);
         $str = str_replace('&nbsp;', '', $str);

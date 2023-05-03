@@ -79,7 +79,21 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="slotsby (1)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="slotses">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="stavki.ua">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

@@ -6,6 +6,7 @@ use App\CardBuilder;
 use App\Models\Cash;
 use Illuminate\Http\Request;
 use App\Models\Posts;
+use App\Models\Pages;
 use App\Models\Relative;
 
 class CasinoController extends PostController
@@ -74,6 +75,9 @@ class CasinoController extends PostController
         if(!$data->isEmpty()) {
             $response['body'] = $data[0];
             $response['body'] = self::dataCommonDecode($data[0]) + self::dataMetaDecode($data[0]);
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1; 
             $response['body']['vendors'] = [];
             $arr_vendors = Relative::getRelativeByPostId(self::CASINO_VENDOR_RELATIVE_DB, $data[0]->id);
             if(!empty($arr_vendors)) {

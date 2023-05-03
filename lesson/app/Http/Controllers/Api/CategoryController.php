@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Cash;
 use App\Models\Posts;
+use App\Models\Pages;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\CardBuilder;
@@ -49,6 +50,9 @@ class CategoryController extends Controller
         $response['body']['category_link'] = [];
         if(!$data->isEmpty()) {
             $response['body'] = self::dataMetaDecode($data[0]);
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1;
             $response['body']['category_link'] = CardBuilder::categoryLinks($category->getChildPublicCategory($data[0]->id));
 
             $relative_slots = $category->getPublicPostsFromCategory($data[0]->id);
@@ -171,6 +175,7 @@ class CategoryController extends Controller
         $newData['keywords'] = htmlspecialchars_decode($data->keywords);
         $newData['index_seo'] = $data->index_seo;
         $newData['follow'] = $data->follow;
+        $newData['create_at'] = $data->create_at;
         $str = htmlspecialchars_decode(html_entity_decode($data->content));
         $str = str_replace('<pre', '<div', $str);
         $str = str_replace('</pre', '</div', $str);
@@ -189,6 +194,9 @@ class CategoryController extends Controller
         $data = $category->getPublicPostByUrl($url);
         if(!$data->isEmpty()) {
             $response['body'] = self::dataMetaDecode($data[0]);
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1; 
             $relative_casino = $category->getPublicPostsFromCategory($data[0]->id);
             $arr_id = [];
             foreach ($relative_casino as $item ) $arr_id[] = $item->id;
@@ -221,6 +229,9 @@ class CategoryController extends Controller
             foreach ($relative_slots as $item ) $arr_id[] = $item->id;
             $slots = new Posts(['post_type' => 'slot']);
             $response['body']['slots'] = CardBuilder::mainSlotCard($slots->getPublicPostsByArrIdWithRating($arr_id));
+            $pageModel = new Pages();
+            $autorPage = $pageModel->getPublicPostByUrl(config('constants.PAGES.AUTHOR'));
+            $response['body']['author_name'] = $autorPage[0]->h1; 
             $response['confirm'] = 'ok';
             Cash::store(url()->current(), json_encode($response));
         }

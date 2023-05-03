@@ -35,7 +35,8 @@ return [
         'INTERVIEW' => 'interview',
         'USEFUL' => 'useful',
         'SEARCH' => 'search',
-        'SITE_MAP' => 'sitemap'
+        'SITE_MAP' => 'sitemap',
+        'AUTHOR' => 'author'
     ],
     'SINGLE_CASINO_GAMES' => ["Blackjack", "Baccarat", "Roulette", "Live Casino", "Slots", "Poker"]
 ];
