@@ -126,10 +126,12 @@ Route::namespace('Api')->group(function () {
     Route::get('category/'.config('constants.CATEGORY.MEGAWAYS'), 'CategoryController@megaways')->middleware('cash');
 
     Route::get('casino', 'CasinoController@index');
+    Route::post('casino/search', 'CasinoController@search');
     Route::get('casino/{id}', 'CasinoController@show')->middleware('cash');
     Route::get('payments', 'PaymentController@index');
     Route::get('payments/{id}', 'PaymentController@show')->middleware('cash');
     Route::get('slots', 'SlotController@index');
+    Route::post('slots/search', 'SlotController@search');
     Route::get('slots/{id}', 'SlotController@show')->middleware('cash');
     Route::get('vendors', 'VendorController@index');
     Route::get('vendors/{id}', 'VendorController@show')->middleware('cash');

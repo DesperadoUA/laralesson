@@ -7,6 +7,7 @@ use App\Models\Cash;
 use App\Models\Posts;
 use App\Models\Pages;
 use App\Models\Relative;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class SlotController extends PostController
@@ -16,6 +17,7 @@ class SlotController extends PostController
     const SLOT_VENDOR_RELATIVE_DB = 'slot_vendor';
     const SLOT_CASINO_RELATIVE_DB = 'slot_casino';
     const POPULAR_CASINO = 3;
+    const LIMIT_SLOTS = 1000;
 
     public function index(Request $request)
     {
@@ -114,5 +116,50 @@ class SlotController extends PostController
         }
 
         return $newData;
+    }
+    
+    public function search(Request $request) {
+        $response = [
+            'body' => [],
+            'confirm' => 'ok'
+        ];
+        $postType = $request->input('postType');
+        $postUrl = $request->input('postUrl');
+        $slotsModel = new Posts(['post_type' => self::POST_TYPE]);
+        if($postType === 'page') {
+            if($postUrl === 'slots') {
+                $settings = [
+                    'lang'      => self::LANG,
+                    'limit'     => self::LIMIT_SLOTS,
+                    'order_key' => 'rating'
+                ];
+            }
+            $response['body']['posts'] = CardBuilder::mainSlotCard($slotsModel->getPublicPosts($settings));
+        }
+        else if($postType === 'category') {
+            $category = new Category();
+            $data = $category->getPublicPostByUrl($postUrl);
+            if(!$data->isEmpty()) {
+                $relative_posts = $category->getPublicPostsFromCategory($data[0]->id);
+                $arr_id = [];
+                foreach ($relative_posts as $item ) $arr_id[] = $item->id;
+                $response['body']['posts'] = CardBuilder::mainSlotCard($slotsModel->getPublicPostsByArrIdWithRating($arr_id));
+            }
+        }
+        else {
+            $configPostTypes = [
+                'vendor' => [
+                    'table' => 'vendor',
+                    'relative' => self::SLOT_VENDOR_RELATIVE_DB
+                ]
+            ];
+            $post = new Posts(['post_type' => $configPostTypes[$postType]['table']]);
+            $data = $post->getPublicPostByUrl($postUrl);
+            if(!$data->isEmpty()) {
+                $arr_casino = Relative::getPostIdByRelative($configPostTypes[$postType]['relative'], $data[0]->id);
+                $response['body']['posts'] = CardBuilder::mainSlotCard($slotsModel->getPublicPostsByArrIdWithRating($arr_casino));
+            }
+        }
+        return response()->json($response);
     }
 }

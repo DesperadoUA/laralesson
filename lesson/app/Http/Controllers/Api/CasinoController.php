@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\Pages;
 use App\Models\Relative;
+use App\Models\Category;
 
 class CasinoController extends PostController
 {
@@ -22,6 +23,7 @@ class CasinoController extends PostController
     const CASINO_VENDOR_RELATIVE_DB = 'casino_vendor';
     const CASINO_PAYMENT_RELATIVE_DB = 'casino_payment';
     const SLOTS_CASINO_RELATIVE_DB = 'slot_casino';
+    const MAIN_PAGE_LIMIT_CASINO = 1000;
     /**
      * Display a listing of the resource.
      *
@@ -153,5 +155,48 @@ class CasinoController extends PostController
         }
         return $newData;
     }
-    
+    public function search(Request $request) {
+        $response = [
+            'body' => [],
+            'confirm' => 'ok'
+        ];
+        $postType = $request->input('postType');
+        $postUrl = $request->input('postUrl');
+        $casinoModel = new Posts(['post_type' => 'casino']);
+        if($postType === 'page') {
+            if($postUrl === '/') {
+                $settings = [
+                    'lang'      => self::LANG,
+                    'limit'     => self::MAIN_PAGE_LIMIT_CASINO,
+                    'order_key' => 'rating'
+                ];
+            }
+            $response['body']['posts'] = CardBuilder::casinoCard($casinoModel->getPublicPosts($settings));
+        }
+        else if($postType === 'category') {
+            $category = new Category();
+            $data = $category->getPublicPostByUrl($postUrl);
+            if(!$data->isEmpty()) {
+                $relative_casino = $category->getPublicPostsFromCategory($data[0]->id);
+                $arr_id = [];
+                foreach ($relative_casino as $item ) $arr_id[] = $item->id;
+                $response['body']['posts'] = CardBuilder::casinoCard($casinoModel->getPublicPostsByArrIdWithRating($arr_id));
+            }
+        }
+        else {
+            $configPostTypes = [
+                'payment' => [
+                    'table' => 'payment',
+                    'relative' => 'casino_payment'
+                ]
+            ];
+            $post = new Posts(['post_type' => $configPostTypes[$postType]['table']]);
+            $data = $post->getPublicPostByUrl($postUrl);
+            if(!$data->isEmpty()) {
+                $arr_casino = Relative::getPostIdByRelative($configPostTypes[$postType]['relative'], $data[0]->id);
+                $response['body']['posts'] = CardBuilder::casinoCard($casinoModel->getPublicPostsByArrIdWithRating($arr_casino));
+            }
+        }
+        return response()->json($response);
+    }
 }
