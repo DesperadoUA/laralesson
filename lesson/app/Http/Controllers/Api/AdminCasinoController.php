@@ -240,6 +240,12 @@ class AdminCasinoController extends AdminPostsController
         else {
             $newData['type_games'] = json_encode([]);
         }
+        if(isset($data['promocod'])) {
+            $newData['promocod'] = $data['promocod'];
+        }
+        else {
+            $newData['promocod'] = '';
+        }
 
         return $newData;
     }
@@ -264,6 +270,7 @@ class AdminCasinoController extends AdminPostsController
         $newData['min_payout'] = htmlspecialchars_decode($data->min_payout);
         $newData['rating'] = (int)$data->rating;
         $newData['close'] = $data->close;
+        $newData['promocod'] = $data->promocod;
         if(empty($data->ref)) {
             $newData['ref'] = [];
         }

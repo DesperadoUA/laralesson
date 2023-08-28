@@ -128,6 +128,7 @@ class CasinoController extends PostController
         $newData['min_payout'] = htmlspecialchars_decode($data->min_payout);
         $newData['rating'] = (int)$data->rating;
         $newData['close'] = (int)$data->close;
+        $newData['promocod'] = $data->promocod;
         if(empty($data->ref)) {
             $newData['ref'] = [];
         }
@@ -152,4 +153,5 @@ class CasinoController extends PostController
         }
         return $newData;
     }
+    
 }
