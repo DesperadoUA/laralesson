@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 class BonusController extends PostController
 {
     const POST_TYPE = 'bonus';
+    const BONUSES_LIMIT = 1000;
 
     public function index(Request $request)
     {
@@ -73,5 +74,29 @@ class BonusController extends PostController
         $newData['close'] = (int)$data->close;
 
         return $newData;
+    }
+    public function search(Request $request) {
+        $response = [
+            'body' => [],
+            'confirm' => 'ok'
+        ];
+        $postType = $request->input('postType');
+        $postUrl = $request->input('postUrl');
+        $bonusModel = new Posts(['post_type' => self::POST_TYPE]);
+        if($postType === 'page') {
+            if($postUrl === 'bonuses') {
+                $settings = [
+                    'lang'      => self::LANG,
+                    'limit'     => self::BONUSES_LIMIT,
+                    'order_key' => 'rating'
+                ];
+            }
+            $response['body']['posts'] = CardBuilder::bonusCard($bonusModel->getPublicPosts($settings));
+        }
+        else if($postType === 'category') {
+        }
+        else {
+        }
+        return response()->json($response);
     }
 }

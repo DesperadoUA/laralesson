@@ -136,6 +136,7 @@ Route::namespace('Api')->group(function () {
     Route::get('vendors', 'VendorController@index');
     Route::get('vendors/{id}', 'VendorController@show')->middleware('cash');
     Route::get('bonuses', 'BonusController@index');
+    Route::post('bonuses/search', 'BonusController@search');
     Route::get('bonuses/{id}', 'BonusController@show')->middleware('cash');
     Route::get('interview', 'InterviewController@index');
     Route::get('interview/{id}', 'InterviewController@show')->middleware('cash');
