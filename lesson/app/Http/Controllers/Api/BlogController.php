@@ -13,6 +13,7 @@ class BlogController extends PostController
 {
     const POST_TYPE = 'blog';
     const LIMIT_LAST_POSTS = 5;
+    const BLOG_LIMIT = 1000;
     public function index(Request $request)
     {
         $response = [
@@ -72,5 +73,28 @@ class BlogController extends PostController
         $newData = [];
         $newData['author'] = htmlspecialchars_decode($data->author);
         return $newData;
+    }
+    public function search(Request $request) {
+        $response = [
+            'body' => [],
+            'confirm' => 'ok'
+        ];
+        $postType = $request->input('postType');
+        $postUrl = $request->input('postUrl');
+        $blogModel = new Posts(['post_type' => self::POST_TYPE]);
+        if($postType === 'page') {
+            if($postUrl === 'blog') {
+                $settings = [
+                    'lang'      => self::LANG,
+                    'limit'     => self::BLOG_LIMIT,
+                ];
+            }
+            $response['body']['posts'] = CardBuilder::blogCard($blogModel->getPublicPosts($settings));
+        }
+        else if($postType === 'category') {
+        }
+        else {
+        }
+        return response()->json($response);
     }
 }

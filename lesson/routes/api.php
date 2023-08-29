@@ -139,10 +139,13 @@ Route::namespace('Api')->group(function () {
     Route::post('bonuses/search', 'BonusController@search');
     Route::get('bonuses/{id}', 'BonusController@show')->middleware('cash');
     Route::get('interview', 'InterviewController@index');
+    Route::post('interview/search', 'InterviewController@search');
     Route::get('interview/{id}', 'InterviewController@show')->middleware('cash');
     Route::get('blog', 'BlogController@index');
+    Route::post('blog/search', 'BlogController@search');
     Route::get('blog/{id}', 'BlogController@show')->middleware('cash');
     Route::get('news', 'NewsController@index');
+    Route::post('news/search', 'NewsController@search');
     Route::get('news/{id}', 'NewsController@show')->middleware('cash');
     Route::get('candidate/{id}', 'CandidateController@show');
     Route::post('forum-user/login', 'ForumUserController@login');

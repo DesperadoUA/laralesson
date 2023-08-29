@@ -13,6 +13,7 @@ class NewsController extends PostController
 {
     const POST_TYPE = 'news';
     const LIMIT_LAST_POSTS = 5;
+    const NEWS_LIMIT = 1000;
     public function index(Request $request)
     {
         $response = [
@@ -72,5 +73,28 @@ class NewsController extends PostController
         $newData = [];
         $newData['author'] = htmlspecialchars_decode($data->author);
         return $newData;
+    }
+    public function search(Request $request) {
+        $response = [
+            'body' => [],
+            'confirm' => 'ok'
+        ];
+        $postType = $request->input('postType');
+        $postUrl = $request->input('postUrl');
+        $newsModel = new Posts(['post_type' => self::POST_TYPE]);
+        if($postType === 'page') {
+            if($postUrl === 'news') {
+                $settings = [
+                    'lang'      => self::LANG,
+                    'limit'     => self::NEWS_LIMIT,
+                ];
+            }
+            $response['body']['posts'] = CardBuilder::newsCard($newsModel->getPublicPosts($settings));
+        }
+        else if($postType === 'category') {
+        }
+        else {
+        }
+        return response()->json($response);
     }
 }

@@ -12,6 +12,7 @@ class InterviewController extends PostController
 {
     const POST_TYPE = 'interview';
     const LIMIT_LAST_POSTS = 5;
+    const INTERVIEW_LIMIT = 1000;
 
     public function index(Request $request)
     {
@@ -69,5 +70,28 @@ class InterviewController extends PostController
         $newData = [];
         $newData['value'] = htmlspecialchars_decode($data->value);
         return $newData;
+    }
+    public function search(Request $request) {
+        $response = [
+            'body' => [],
+            'confirm' => 'ok'
+        ];
+        $postType = $request->input('postType');
+        $postUrl = $request->input('postUrl');
+        $interviewModel = new Posts(['post_type' => self::POST_TYPE]);
+        if($postType === 'page') {
+            if($postUrl === 'news') {
+                $settings = [
+                    'lang'      => self::LANG,
+                    'limit'     => self::INTERVIEW_LIMIT,
+                ];
+            }
+            $response['body']['posts'] = CardBuilder::blogCard($interviewModel->getPublicPosts($settings));
+        }
+        else if($postType === 'category') {
+        }
+        else {
+        }
+        return response()->json($response);
     }
 }

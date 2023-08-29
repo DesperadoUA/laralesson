@@ -120,17 +120,17 @@ class CardBuilder {
         return $posts;
     }
     static function blogCard($arr_blog) {
-    if(empty($arr_blog)) return [];
-    $posts = [];
-    foreach ($arr_blog as $item) {
-        $posts[] = [
-            'title' => $item->title,
-            'permalink' => '/'.$item->slug.'/'.$item->permalink,
-            'thumbnail' => $item->thumbnail
-        ];
+        if(empty($arr_blog)) return [];
+        $posts = [];
+        foreach ($arr_blog as $item) {
+            $posts[] = [
+                'title' => $item->title,
+                'permalink' => '/'.$item->slug.'/'.$item->permalink,
+                'thumbnail' => $item->thumbnail
+            ];
+        }
+        return $posts;
     }
-    return $posts;
-}
     static function newsCard($arr_news) {
         if(empty($arr_news)) return [];
         $posts = [];
